@@ -11,4 +11,7 @@ class Author extends Model
 
     public $timestamps = false;
     protected $table = 'author';
+    public static function getTableName():string {
+        return 'author';
+    }
 }

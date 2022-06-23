@@ -1,0 +1,18 @@
+Repositories: Noi lay du lieu tu database sau do truyen vao service tu service truyen vao controller
+Model: Dinh nghia cac relationship va table
+Service: Xu ly data sau do tra ve constroller
+Resource: Tra ve du lieu thieu format mong muon : va cac request co chua tham so tra ve kieu JSON het
+   php artisan make:resource BookResource
+ResourceCollection : format data loc bo cac du lieu ko can thiet  phan trang validate khong can tham so co the filter
+data ket noi  data
+    php artisan make:resource BookResource --collection
+
+fillable: khai bao cac truong cho phep insert trong database su dung trong model - guarded : nguoc lai ko cho phep inser
+vao cac thuoc tinh trong do
+{
+Request: xu ly du lieu tu UI tra ve validate thuong dung cho insert update
+php artisan make:request StoreBookRequest
+
+Rule: Custom nhung thu co san Vi du kiem tra thang do da 18 tuoi chua
+php artisan make:rule Available
+}
