@@ -27,23 +27,59 @@ class BookService extends BaseServices
             if ($perPage == null || !is_numeric($perPage)) {
                 $perPage = 5;
             }
-            if ($request->has('author_id') || $request->has('category_id')) {
-                $data = $this->bookRepository->fillter($request, $perPage);
-            } else {
-                $data = $this->bookRepository->getAll($perPage);
-            }
+            $data=$this->fillter($request,$perPage);
         } else {
-            if ($request->has('author_id') || $request->has('category_id')) {
-                $data = $this->bookRepository->fillter($request, $perPage);
-            } else {
-                $data = $this->bookRepository->getAll($perPage);
-            }
+            $data=$this->fillter($request,$perPage);
         }
-        return $data;
 
+        if($data){
+            $listBook=[
+                'message'=>'Success.',
+                'statusCode'=> 'true',
+                'data'=>$data->items(),
+                'current_page'=>$data->currentPage(),
+                'next_page_url'=>$data->nextPageUrl(),
+                'pre_page_url'=>$data->previousPageUrl(),
+                'last_page_url'=>$data->lastPage(),
+                'perPage'=>$data->perPage(),
+                'toTalPage'=>$data->total()
+            ];
+        }else{
+            $listBook=[
+                'message'=>'Not Error.',
+                'statusCode'=> 'False',
+
+            ];
+        }
+        return $listBook;
 
     }
 
+    public function fillter($conditions,$perPage)
+    {
+
+        if ($conditions->has('author_id') || $conditions->has('category_id') ) {
+            $cdtCategory=$conditions['category_id'];
+            $cdtAuthor=$conditions['author_id'];
+            if(is_numeric($cdtCategory)||is_numeric($cdtAuthor)){
+                switch ($conditions){
+                    case $cdtCategory != null :
+                    case $cdtAuthor != null :
+                    $data = $this->bookRepository->fillter($cdtAuthor,$cdtCategory,$perPage);
+                        break;
+                    default:
+                        break;
+                }
+            }else{
+                $data = $this->bookRepository->getAll($perPage);
+
+            }
+        }else{
+            $data = $this->bookRepository->getAll($perPage);
+        }
+//        dd($data);
+        return $data;
+    }
 
 //    public function fillter($conditions)
 //    {

@@ -17,6 +17,8 @@ class BookRepository extends BaseRepository
     public function getAll($perPage)
     {
         // TODO: Implement getAll() method.
+
+        $this->query->with('discount');
         return $this->query->paginate($perPage);
 
     }
@@ -27,32 +29,23 @@ class BookRepository extends BaseRepository
         return $this->query->find($id);
     }
 
-    public function fillter($conditions, $perPage = 5)
+    public function fillter($cdtAuthor, $cdtCategory, $perPage = 5)
     {
         // TODO: Implement filter() method.
 
         $bookList = $this->query;
-//        Check Category
-        try {
-            if ($conditions['category_id'] != null && is_numeric($conditions['category_id'])
-                && $bookList->where('category_id', '=', $conditions['category_id'])->get()) {
-                $this->query->where('category_id', '=', $conditions['category_id']);
-            }
-        } catch (\Exception $e) {
-        }
-//        Check Author
-        try {
-            if ($conditions['author_id'] != null && is_numeric($conditions['author_id']) && $bookList->where('author_id', '=', $conditions['author_id'])->get()) {
+        if (is_numeric($cdtAuthor) && !empty($bookList->where('author_id', '=', $cdtAuthor)->get())) {
 
-                $this->query->where('author_id', '=', $conditions['author_id']);
-
-            }
-        } catch (\Exception $e) {
+            $this->query->where('author_id', '=', $cdtAuthor);
         }
+        if (is_numeric($cdtCategory) && !empty($bookList->where('category_id', '=', $cdtCategory)->get())) {
+
+            $this->query->where('category_id', '=', $cdtCategory);
+        }
+        $this->query->with('discount');
         return $this->query->paginate($perPage);
 
     }
-
 
 
     public function create($data)

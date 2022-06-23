@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\BookCollection;
+use App\Http\Resources\BookResource;
+use App\Repositories\BookRepository;
 use App\Repositories\PaginateRepositories;
 use App\Services\Book\BookService;
 use Illuminate\Http\Request;
@@ -24,10 +26,7 @@ class BookController extends Controller
      */
     public function index(Request $request)
     {
-        $listBook =  new BookCollection($this->bookService->getAll($request));
-        return $listBook;
-//     return  response( $fillterData['books'],$fillterData['statusCode']);
-
+        return $this->bookService->getAll($request);
     }
 
 

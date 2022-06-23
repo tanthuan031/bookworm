@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Book extends Model
 {
@@ -25,10 +26,10 @@ class Book extends Model
 //    protected $guarded = [];
 
 //    Relationship
-//    public function discount()
-//    {
-//        return $this->hasMany(Discount::class);
-//    }
+    public function discount():HasOne
+    {
+        return $this->hasOne(Discount::class);
+    }
 //    public function review(){
 //        return $this->hasMany(Review::class);
 //
