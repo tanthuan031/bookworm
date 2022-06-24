@@ -26,7 +26,12 @@ class BookController extends Controller
      */
     public function index(Request $request)
     {
-        return $this->bookService->getAll($request);
+//        getAll Book
+//        return $this->bookService->getAll($request);
+//        get On Sale
+        $bookHome=$this->bookService->getBookHomeSale_Feature($request);
+        return response()->json($bookHome);
+
     }
 
 

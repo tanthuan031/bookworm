@@ -27,27 +27,27 @@ class BookService extends BaseServices
             if ($perPage == null || !is_numeric($perPage)) {
                 $perPage = 5;
             }
-            $data=$this->fillter($request,$perPage);
+            $data = $this->fillter($request, $perPage);
         } else {
-            $data=$this->fillter($request,$perPage);
+            $data = $this->fillter($request, $perPage);
         }
 
-        if($data){
-            $listBook=[
-                'message'=>'Success.',
-                'statusCode'=> 'true',
-                'data'=>$data->items(),
-                'current_page'=>$data->currentPage(),
-                'next_page_url'=>$data->nextPageUrl(),
-                'pre_page_url'=>$data->previousPageUrl(),
-                'last_page_url'=>$data->lastPage(),
-                'perPage'=>$data->perPage(),
-                'toTalPage'=>$data->total()
+        if ($data) {
+            $listBook = [
+                'message' => 'Success.',
+                'statusCode' => 'true',
+                'data' => $data->items(),
+                'current_page' => $data->currentPage(),
+                'next_page_url' => $data->nextPageUrl(),
+                'pre_page_url' => $data->previousPageUrl(),
+                'last_page_url' => $data->lastPage(),
+                'perPage' => $data->perPage(),
+                'toTalPage' => $data->total()
             ];
-        }else{
-            $listBook=[
-                'message'=>'Not Error.',
-                'statusCode'=> 'False',
+        } else {
+            $listBook = [
+                'message' => 'Not Error.',
+                'statusCode' => 'False',
 
             ];
         }
@@ -55,26 +55,26 @@ class BookService extends BaseServices
 
     }
 
-    public function fillter($conditions,$perPage)
+    public function fillter($conditions, $perPage)
     {
 
-        if ($conditions->has('author_id') || $conditions->has('category_id') ) {
-            $cdtCategory=$conditions['category_id'];
-            $cdtAuthor=$conditions['author_id'];
-            if(is_numeric($cdtCategory)||is_numeric($cdtAuthor)){
-                switch ($conditions){
+        if ($conditions->has('author_id') || $conditions->has('category_id')) {
+            $cdtCategory = $conditions['category_id'];
+            $cdtAuthor = $conditions['author_id'];
+            if (is_numeric($cdtCategory) || is_numeric($cdtAuthor)) {
+                switch ($conditions) {
                     case $cdtCategory != null :
                     case $cdtAuthor != null :
-                    $data = $this->bookRepository->fillter($cdtAuthor,$cdtCategory,$perPage);
+                        $data = $this->bookRepository->fillter($cdtAuthor, $cdtCategory, $perPage);
                         break;
                     default:
                         break;
                 }
-            }else{
+            }else {
                 $data = $this->bookRepository->getAll($perPage);
 
             }
-        }else{
+        } else {
             $data = $this->bookRepository->getAll($perPage);
         }
 //        dd($data);
@@ -106,6 +106,33 @@ class BookService extends BaseServices
 //        return  $fillterBook;
 //    }
 
+//Get HomeBookSale_Featured
+
+    public function getBookHomeSale_Feature($conditions)
+    {
+        // TODO: Implement getBookHomeSale_Feature() method.
+//    dd($conditions['book-home']);
+        $onSale = '';
+        $featured = '';
+        $listBook=[];
+//        http://bookworm-app.local:8000/api/books?book-home=onsale
+        if ($conditions->has('book-home')) {
+            if ($conditions['book-home'] == 'onsale') {
+
+                $onSale = $conditions['book-home'];
+                $listBook = $this->bookRepository->getHomeBookOnSale_Featured($onSale, $featured);
+
+            } elseif ($conditions['book-home'] == 'featured') {
+
+                $featured = $conditions['book-home'];
+                $listBook = $this->bookRepository->getHomeBookOnSale_Featured($onSale, $featured);
+            } else {
+                $listBook = [];
+            }
+        }
+        return $listBook;
+
+    }
     public function getById($id)
     {
         // TODO: Implement findById() method.

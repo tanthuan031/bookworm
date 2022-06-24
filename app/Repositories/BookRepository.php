@@ -26,6 +26,7 @@ class BookRepository extends BaseRepository
     public function getById($id)
     {
         // TODO: Implement getById() method.
+        $this->query->with('discount');
         return $this->query->find($id);
     }
 
@@ -47,6 +48,33 @@ class BookRepository extends BaseRepository
 
     }
 
+    public function getHomeBookOnSale_Featured($onSale,$featured)
+    {
+        // TODO: Implement getHomeBookOnSale_Featured() meth od.
+//        dd($onSale,$featured);
+
+
+        $listBooksHome=[];
+        if(!empty($onSale)&& empty($featured)){
+            $listBooksHome = $this->query
+                ->select('book.id','book.author_id','book.book_title','book.book_summary','book.book_price','book.book_cover_photo','discount.discount_price')
+                ->join('discount','book.id','=','discount.book_id')
+                ->groupBy('book.id','book.author_id','book.book_title','book.book_summary','book.book_price',
+                    'book.book_cover_photo','discount.discount_start_date','discount.discount_end_date',
+                    'discount.discount_price')
+                ->having(Book::raw('discount.discount_end_date -discount.discount_start_date'),'>',0)
+                ->orHavingNull(Book::raw('discount.discount_end_date -discount.discount_start_date'))
+                ->orderBy(Book::raw('book.book_price - discount.discount_price'),'desc')
+                ->limit(10)
+//                ->paginate(5,['*'],'book-home');
+//                ->paginate();
+            ->get();
+        }elseif (empty($onSale)&& !empty($featured)){
+            $listBooksHome=['Featured'];
+        }
+     return $listBooksHome;
+
+    }
 
     public function create($data)
     {
