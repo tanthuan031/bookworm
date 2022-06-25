@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Resources\BookCollection;
 use App\Http\Resources\BookResource;
 use App\Repositories\BookRepository;
-use App\Repositories\PaginateRepositories;
 use App\Services\Book\BookService;
 use Illuminate\Http\Request;
 
@@ -27,10 +26,15 @@ class BookController extends Controller
     public function index(Request $request)
     {
 //        getAll Book
-//        return $this->bookService->getAll($request);
-//        get On Sale
-        $bookHome=$this->bookService->getBookHomeSale_Feature($request);
-        return response()->json($bookHome);
+
+        return $this->bookService->getAll($request);
+
+//        *********************
+//        get On Sale - Featured
+//        $bookHome=$this->bookService->getBookHomeSale_Feature($request);
+//        return $bookHome;
+
+
 
     }
 
@@ -57,7 +61,7 @@ class BookController extends Controller
         $book=$this->bookService->create($request->all());
 //        dd($book);
 
-         return json($book['message'],$book['statusCode']);
+         return response()-> json($book['message'],$book['statusCode']);
 
     }
 

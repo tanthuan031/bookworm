@@ -70,7 +70,7 @@ class BookService extends BaseServices
                     default:
                         break;
                 }
-            }else {
+            } else {
                 $data = $this->bookRepository->getAll($perPage);
 
             }
@@ -114,7 +114,7 @@ class BookService extends BaseServices
 //    dd($conditions['book-home']);
         $onSale = '';
         $featured = '';
-        $listBook=[];
+        $listBook = [];
 //        http://bookworm-app.local:8000/api/books?book-home=onsale
         if ($conditions->has('book-home')) {
             if ($conditions['book-home'] == 'onsale') {
@@ -122,8 +122,15 @@ class BookService extends BaseServices
                 $onSale = $conditions['book-home'];
                 $listBook = $this->bookRepository->getHomeBookOnSale_Featured($onSale, $featured);
 
-            } elseif ($conditions['book-home'] == 'featured') {
+            } //http://bookworm-app.local:8000/api/books?book-home=featured-recommend
+            elseif ($conditions['book-home'] == 'featured-recommend') {
 
+                $featured = $conditions['book-home'];
+                $listBook = $this->bookRepository->getHomeBookOnSale_Featured($onSale, $featured);
+
+            } //http://bookworm-app.local:8000/api/books?book-home=featured-popular
+            elseif
+            ($conditions['book-home'] == 'featured-popular') {
                 $featured = $conditions['book-home'];
                 $listBook = $this->bookRepository->getHomeBookOnSale_Featured($onSale, $featured);
             } else {
@@ -133,7 +140,9 @@ class BookService extends BaseServices
         return $listBook;
 
     }
-    public function getById($id)
+
+    public
+    function getById($id)
     {
         // TODO: Implement findById() method.
         $book = $this->bookRepository->getById($id);
@@ -149,7 +158,8 @@ class BookService extends BaseServices
     }
 
 
-    public function create($request)
+    public
+    function create($request)
     {
         // TODO: Implement create() method.
         // TODO: Handle data input
@@ -173,7 +183,8 @@ class BookService extends BaseServices
         return $data;
     }
 
-    public function update($request, $id)
+    public
+    function update($request, $id)
     {
         // TODO: Implement update() method.
         $oldBook = $this->bookRepository->getById($id);
@@ -192,7 +203,8 @@ class BookService extends BaseServices
         return $data;
     }
 
-    public function destroy($id)
+    public
+    function destroy($id)
     {
         // TODO: Implement destroy() method.
         $book = $this->bookRepository->getById($id);
