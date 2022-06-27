@@ -111,27 +111,27 @@ class BookService extends BaseServices
     public function getBookHomeSale_Feature($conditions)
     {
         // TODO: Implement getBookHomeSale_Feature() method.
-//    dd($conditions['book-home']);
+//    dd($conditions['list-books']);
         $onSale = '';
         $featured = '';
         $listBook = [];
-//        http://bookworm-app.local:8000/api/books?book-home=onsale
-        if ($conditions->has('book-home')) {
-            if ($conditions['book-home'] == 'onsale') {
+//        http://bookworm-app.local:8000/api/books?list-books=onsale
+        if ($conditions->has('list-books')) {
+            if ($conditions['list-books'] == 'onsale') {
 
-                $onSale = $conditions['book-home'];
+                $onSale = $conditions['list-books'];
                 $listBook = $this->bookRepository->getHomeBookOnSale_Featured($onSale, $featured);
 
-            } //http://bookworm-app.local:8000/api/books?book-home=featured-recommend
-            elseif ($conditions['book-home'] == 'featured-recommend') {
+            } //http://bookworm-app.local:8000/api/books?list-books=featured-recommend
+            elseif ($conditions['list-books'] == 'featured-recommend') {
 
-                $featured = $conditions['book-home'];
+                $featured = $conditions['list-books'];
                 $listBook = $this->bookRepository->getHomeBookOnSale_Featured($onSale, $featured);
 
-            } //http://bookworm-app.local:8000/api/books?book-home=featured-popular
+            } //http://bookworm-app.local:8000/api/books?list-books=featured-popular
             elseif
-            ($conditions['book-home'] == 'featured-popular') {
-                $featured = $conditions['book-home'];
+            ($conditions['list-books'] == 'featured-popular') {
+                $featured = $conditions['list-books'];
                 $listBook = $this->bookRepository->getHomeBookOnSale_Featured($onSale, $featured);
             } else {
                 $listBook = [];
