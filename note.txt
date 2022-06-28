@@ -16,3 +16,14 @@ php artisan make:request StoreBookRequest
 Rule: Custom nhung thu co san Vi du kiem tra thang do da 18 tuoi chua
 php artisan make:rule Available
 }
+
+Fillter:
+    Author: http://bookworm-app.local:8000/api/books?author_id=1,4,5
+    Category: http://bookworm-app.local:8000/api/books?category_id=2,1,3
+HomePage:
+    get10OnSale: http://bookworm-app.local:8000/api/books?list-books=on-sale
+          sort: http://bookworm-app.local:8000/api/books?list-books=on-sale-sort
+    get8FeaturedReccommend: http://bookworm-app.local:8000/api/books?list-books=featured-recommend
+          sort: http://bookworm-app.local:8000/api/books?list-books=featured-recommend-sort
+    get8FeaturedPopular: http://bookworm-app.local:8000/api/books?list-books=featured-popular
+          sort:http://bookworm-app.local:8000/api/books?list-books=featured-recommend-sort

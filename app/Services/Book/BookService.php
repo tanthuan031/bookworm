@@ -21,94 +21,101 @@ class BookService extends BaseServices
     {
         // TODO: Implement getAll() method.
         // TODO: Handle perPage from url
+//        dd($request['sort']);
         $perPage = 5;
+        $data = [];
         if ($request->has('per_page')) {
             $perPage = $request->get('per_page');
             if ($perPage == null || !is_numeric($perPage)) {
                 $perPage = 5;
             }
-            $data = $this->fillter($request, $perPage);
+
+            if ($request->has('author_id') || $request->has('category_id')) {
+                $data = $this->fillter($request, $perPage);
+
+            } elseif ($request->has('list-books')) {
+                $data = $this->getBookHomeSale_Feature($request, $perPage);
+            } elseif ($request->has('sort')) {
+                $sort = $request['sort'];
+                $data = $this->bookRepository->getAll($sort, $perPage);
+
+            }else{
+                $data = $this->bookRepository->getAll('desc', $perPage);
+
+            }
+
         } else {
-            $data = $this->fillter($request, $perPage);
+
+            if ($request->has('author_id') || $request->has('category_id')) {
+                $data = $this->fillter($request, $perPage);
+
+            } elseif ($request->has('list-books')) {
+                $data = $this->getBookHomeSale_Feature($request, $perPage);
+            } elseif ($request->has('sort')) {
+                $sort = $request['sort'];
+                $data = $this->bookRepository->getAll($sort, $perPage);
+
+            }else{
+                $data = $this->bookRepository->getAll('desc', $perPage);
+
+            }
+
+
         }
+//
+//        if ($data) {
+//            $listBook = [
+//                'message' => 'Success.',
+//                'statusCode' => 'true',
+//                'data' => $data->items(),
+//                'current_page' => $data->currentPage(),
+//                'next_page_url' => $data->nextPageUrl(),
+//                'pre_page_url' => $data->previousPageUrl(),
+//                'last_page_url' => $data->lastPage(),
+//                'perPage' => $data->perPage(),
+//                'toTalPage' => $data->total()
+//            ];
+//        } else {
+//            $listBook = [
+//                'message' => 'Not Error.',
+//                'statusCode' => 'False',
+//
+//            ];
+//        }
+//        return $listBook;
 
-        if ($data) {
-            $listBook = [
-                'message' => 'Success.',
-                'statusCode' => 'true',
-                'data' => $data->items(),
-                'current_page' => $data->currentPage(),
-                'next_page_url' => $data->nextPageUrl(),
-                'pre_page_url' => $data->previousPageUrl(),
-                'last_page_url' => $data->lastPage(),
-                'perPage' => $data->perPage(),
-                'toTalPage' => $data->total()
-            ];
-        } else {
-            $listBook = [
-                'message' => 'Not Error.',
-                'statusCode' => 'False',
-
-            ];
-        }
-        return $listBook;
-
+        return $data;
     }
 
     public function fillter($conditions, $perPage)
     {
 
+        $data = [];
         if ($conditions->has('author_id') || $conditions->has('category_id')) {
+
             $cdtCategory = $conditions['category_id'];
             $cdtAuthor = $conditions['author_id'];
-            if (is_numeric($cdtCategory) || is_numeric($cdtAuthor)) {
-                switch ($conditions) {
-                    case $cdtCategory != null :
-                    case $cdtAuthor != null :
-                        $data = $this->bookRepository->fillter($cdtAuthor, $cdtCategory, $perPage);
-                        break;
-                    default:
-                        break;
-                }
-            } else {
-                $data = $this->bookRepository->getAll($perPage);
+            if ($cdtAuthor != null){
+                $cdtAuthor = explode(',', $cdtAuthor);
+
 
             }
-        } else {
-            $data = $this->bookRepository->getAll($perPage);
-        }
-//        dd($data);
+            if ($cdtCategory != null){
+                $cdtCategory = explode(',', $cdtCategory);
+
+            }
+            $data = $this->bookRepository->fillter($cdtAuthor, $cdtCategory, $perPage);
+
+       }
+         else {
+           $data = $this->bookRepository->getAll('desc',$perPage);
+      }
         return $data;
     }
 
-//    public function fillter($conditions)
-//    {
-//        // TODO: Implement fillter() method.
-//
-//        switch ($conditions){
-//            case $conditions->has('author_id') :
-//            case $conditions->has('category_id'):
-//                    $data= $this->bookRepository->fillter($conditions->all());
-//                break;
-//            default:
-//                $data=null;
-//        }
-//        $statusCode=404;
-////        dd($data);
-//        if( $data){
-//            $statusCode=201;
-//        }
-//        $fillterBook=[
-//            'statusCode'=>$statusCode,
-//            'books'=>$data
-//        ];
-//
-//        return  $fillterBook;
-//    }
-
 //Get HomeBookSale_Featured
 
-    public function getBookHomeSale_Feature($conditions)
+    public function getBookHomeSale_Feature($conditions, $perPage)
     {
         // TODO: Implement getBookHomeSale_Feature() method.
 //    dd($conditions['list-books']);
@@ -117,22 +124,22 @@ class BookService extends BaseServices
         $listBook = [];
 //        http://bookworm-app.local:8000/api/books?list-books=onsale
         if ($conditions->has('list-books')) {
-            if ($conditions['list-books'] == 'onsale') {
+            if ($conditions['list-books'] == 'on-sale' || $conditions['list-books'] == 'on-sale-sort') {
 
                 $onSale = $conditions['list-books'];
-                $listBook = $this->bookRepository->getHomeBookOnSale_Featured($onSale, $featured);
+                $listBook = $this->bookRepository->getHomeBookOnSale_Featured($onSale, $featured, $perPage);
 
             } //http://bookworm-app.local:8000/api/books?list-books=featured-recommend
-            elseif ($conditions['list-books'] == 'featured-recommend') {
+            elseif ($conditions['list-books'] == 'featured-recommend' || $conditions['list-books'] == 'featured-recommend-sort') {
 
                 $featured = $conditions['list-books'];
-                $listBook = $this->bookRepository->getHomeBookOnSale_Featured($onSale, $featured);
+                $listBook = $this->bookRepository->getHomeBookOnSale_Featured($onSale, $featured, $perPage);
 
             } //http://bookworm-app.local:8000/api/books?list-books=featured-popular
             elseif
-            ($conditions['list-books'] == 'featured-popular') {
+            ($conditions['list-books'] == 'featured-popular' || $conditions['list-books'] == 'featured-popular-sort') {
                 $featured = $conditions['list-books'];
-                $listBook = $this->bookRepository->getHomeBookOnSale_Featured($onSale, $featured);
+                $listBook = $this->bookRepository->getHomeBookOnSale_Featured($onSale, $featured, $perPage);
             } else {
                 $listBook = [];
             }
@@ -141,8 +148,7 @@ class BookService extends BaseServices
 
     }
 
-    public
-    function getById($id)
+    public function getById($id)
     {
         // TODO: Implement findById() method.
         $book = $this->bookRepository->getById($id);
