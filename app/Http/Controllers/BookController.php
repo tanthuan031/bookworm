@@ -48,21 +48,10 @@ class BookController extends Controller
      */
     public function store(Request $request)
     {
-        //Basic
-//        $book=new Book();
-//        $book->save();
-
-//        Advance OOP
-
-//        $bookRepo=new BookRepository();
-//        $newBook=$bookRepo->create($request->post());
-//        return $newBook;
-//        dd($request->post());
+ 
 
         $book=$this->bookService->create($request->all());
-//        dd($book);
-
-         return response()-> json($book['message'],$book['statusCode']);
+        return response()-> json($book['message'],$book['statusCode']);
 
     }
 
