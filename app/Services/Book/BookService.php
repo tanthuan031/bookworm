@@ -62,29 +62,31 @@ class BookService extends BaseServices
 
 
         }
-//
-//        if ($data) {
-//            $listBook = [
-//                'message' => 'Success.',
-//                'statusCode' => 'true',
-//                'data' => $data->items(),
-//                'current_page' => $data->currentPage(),
-//                'next_page_url' => $data->nextPageUrl(),
-//                'pre_page_url' => $data->previousPageUrl(),
-//                'last_page_url' => $data->lastPage(),
-//                'perPage' => $data->perPage(),
-//                'toTalPage' => $data->total()
-//            ];
-//        } else {
-//            $listBook = [
-//                'message' => 'Not Error.',
-//                'statusCode' => 'False',
-//
-//            ];
-//        }
-//        return $listBook;
+       if ($data) {
+           $listBook = [
+               'message' => 'Success.',
+               'statusCode' => 'true',
+               'data' =>$data->items(),
+               'pagination'=> [
+                    'current_page' => $data->currentPage(),
+                    'next_page_url' => $data->nextPageUrl(),
+                    'pre_page_url' => $data->previousPageUrl(),
+                    'last_page_url' => $data->lastPage(),
+                    'perPage' => $data->perPage(),
+                    'toTalPage' => $data->total()
+               ]
+               
+           ];
+       } else {
+           $listBook = [
+               'message' => 'Not Error.',
+               'statusCode' => 'False',
 
-        return $data;
+           ];
+       }
+       return $listBook;
+
+        // return $data;
     }
 
     public function fillter($conditions, $perPage)

@@ -27,16 +27,22 @@ class BookController extends Controller
     {
 //        getAll Book
 
-        return $this->bookService->getAll($request);
-
-
+        // return $this->bookService->getAll($request);
 //        *********************
 //        get On Sale - Featured
 //        $bookHome=$this->bookService->getBookHomeSale_Feature($request,5);
 //        return $bookHome;
 
-
-
+            if($request->has('list-books') 
+                && ($request->get('list-books') == 'featured-popular'
+                || $request->get('list-books') == 'featured-recommend'
+                || $request->get('list-books') == 'on-sale')            
+                ){
+                    return  $this->bookService->getBookHomeSale_Feature($request, 20);
+                
+            }else{
+                    return $this->bookService->getAll($request);
+            }
     }
 
 
