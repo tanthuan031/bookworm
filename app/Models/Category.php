@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Category extends Model
 {
@@ -12,4 +13,12 @@ class Category extends Model
     public $timestamps = false;
 
     protected $table = 'category';
+    protected $fillable = [
+        'category_name',
+        'category_desc',
+    ];
+    public function book(): HasMany
+    {
+        return $this->hasMany(Book::class);
+    }
 }

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BookController;
+use App\Http\Controllers\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -25,6 +26,5 @@ Route::get('/user', function (Request $request) {
 //Route::resource('/books', BookController::class)->only('index','show');
 
 
-Route::resource('/books',BookController::class);
-
-
+Route::resource('/books', BookController::class);
+Route::resource('/categories', Category::class);

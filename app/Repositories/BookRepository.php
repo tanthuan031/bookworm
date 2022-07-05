@@ -6,9 +6,10 @@ use App\Models\Author;
 use App\Models\Book;
 
 
-class BookRepository extends BaseRepository
+class BookRepository
 {
 
+    protected $query;
     public function __construct()
     {
         $this->query = Book::query();
