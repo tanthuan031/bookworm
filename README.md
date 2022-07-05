@@ -60,3 +60,19 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+<!-- FONEND -->
+
+BOOK
+
+http://bookworm-app.local:8000/#/shop
+
+LISTING
+    filleter , list , sort, pagination
+    Books slice state
+     - Filter by {author_id,category_id, star,page:1,per_page:10}
+     -listBooks
+     -Sort {onSale, Popular,Desc , Asc}
+     - Pagination 
+
+Componet dispatch action -> saga call API (Neu co hanh dong thay doi thi goi saga capnhat state)

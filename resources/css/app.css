@@ -38,6 +38,9 @@ main {
 .margin-Top {
     margin-top: 100px;
 }
+.margin_right-5 {
+    margin-right: 20px;
+}
 .custom-btn {
     background-color: #e9ecef !important;
     color: #000000 !important;
@@ -71,7 +74,8 @@ main {
     display: block;
     padding: 0.5rem 1rem;
     /* text-decoration: none; */
-    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out;
+    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
+        border-color 0.15s ease-in-out;
 }
 /*Button*/
 .btn-info {
@@ -91,11 +95,9 @@ main {
     margin-right: 10px;
 }
 /* ONSALE */
-.carousel-control-next, .carousel-control-prev {
-  
+.carousel-control-next,
+.carousel-control-prev {
     width: 4% !important;
-
-
 }
 .carousel-control-prev {
     left: -10px !important;
@@ -121,7 +123,7 @@ main {
 .btn-view-all {
     /* padding-left: 26% !important; */
     display: flex;
-    justify-content: end;
+    justify-content: flex-end;
 }
 
 /*CARD ITEM*/
@@ -134,16 +136,43 @@ main {
 .card {
     text-decoration: none !important;
     color: #1a202c;
+    min-height: 75%;
+}
+
+.card-text-custom {
+    margin: 0;
 }
 .card:hover {
     color: #1a202c;
     box-shadow: 1px 1px 1px #9ba4a6;
+}
+
+.card-title-custom {
+    font-size: 1rem !important;
+    height: 40px !important;
+    margin: 0 !important;
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* số dòng hiển thị */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.card-body-item-custom {
+    height: 120px !important;
+    padding: 0.4rem 1rem;
 }
 .star-body {
     text-align: center;
 }
 .star-checked {
     color: orange;
+}
+.card-book-price {
+    margin-right: 8%;
+}
+.text-muted.card-price-discount {
+    color: #000000 !important;
+    font-weight: 600;
 }
 
 /*FEATURED */
@@ -154,7 +183,9 @@ main {
     text-decoration: none !important;
     color: #333 !important;
 }
-
+.active-featured {
+    background-color: #0dcaf0 !important;
+}
 /* SHOPPAGE */
 
 .shop-page {
@@ -173,7 +204,7 @@ main {
 
 .btn-shop-page-product {
     display: flex;
-    justify-content: flex-end;
+    justify-content: right;
 }
 .btn-shop-page-product-sort {
     margin-right: 10px;

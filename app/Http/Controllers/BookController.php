@@ -38,6 +38,7 @@ class BookController extends Controller
                 || $request->get('list_books') == 'featured-recommend'
                 || $request->get('list_books') == 'on-sale')
         ) {
+
             return  $this->bookService->getBookHomeSale_Feature($request, 20);
         } else {
             return $this->bookService->getAll($request);

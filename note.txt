@@ -27,3 +27,16 @@ HomePage:
           sort: http://bookworm-app.local:8000/api/books?list-books=featured-recommend-sort
     get8FeaturedPopular: http://bookworm-app.local:8000/api/books?list-books=featured-popular
           sort:http://bookworm-app.local:8000/api/books?list-books=featured-recommend-sort
+
+FONTEND
+
+    clientAXIOS: Dinh nghia lai axios khi lay du lieu tu server
+    axiosClient.interceptors.request.use(function (config ) {// Dung de handle data truoc khi gui cho server
+    axiosClient.interceptors.response.use(function (response ) { // Dung de handle data truoc khi client nhan
+
+
+    authslice: dinh nghia action va reducer
+    authsaga: fetch api
+    reducer : chua cac action (Cap nhat lai state)
+    take: cac thang nam duoi no chi chay khi co dispatch action
+    call: gui api call api

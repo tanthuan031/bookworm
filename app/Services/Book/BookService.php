@@ -128,6 +128,7 @@ class BookService extends BaseServices
                 $listBook = [];
             }
         }
+
         return $listBook;
     }
 
