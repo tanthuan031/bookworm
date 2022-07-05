@@ -15,8 +15,7 @@ class BookController extends Controller
 
     public function __construct(BookService $bookService)
     {
-        $this->bookService=$bookService;
-
+        $this->bookService = $bookService;
     }
     /**
      * Display a listing of the resource.
@@ -25,24 +24,24 @@ class BookController extends Controller
      */
     public function index(Request $request)
     {
-//        getAll Book
+        //        getAll Book
 
         // return $this->bookService->getAll($request);
-//        *********************
-//        get On Sale - Featured
-//        $bookHome=$this->bookService->getBookHomeSale_Feature($request,5);
-//        return $bookHome;
+        //        *********************
+        //        get On Sale - Featured
+        //        $bookHome=$this->bookService->getBookHomeSale_Feature($request,5);
+        //        return $bookHome;
 
-            if($request->has('list-books') 
-                && ($request->get('list-books') == 'featured-popular'
-                || $request->get('list-books') == 'featured-recommend'
-                || $request->get('list-books') == 'on-sale')            
-                ){
-                    return  $this->bookService->getBookHomeSale_Feature($request, 20);
-                
-            }else{
-                    return $this->bookService->getAll($request);
-            }
+        if (
+            $request->has('list_books')
+            && ($request->get('list_books') == 'featured-popular'
+                || $request->get('list_books') == 'featured-recommend'
+                || $request->get('list_books') == 'on-sale')
+        ) {
+            return  $this->bookService->getBookHomeSale_Feature($request, 20);
+        } else {
+            return $this->bookService->getAll($request);
+        }
     }
 
 
@@ -54,11 +53,10 @@ class BookController extends Controller
      */
     public function store(Request $request)
     {
- 
 
-        $book=$this->bookService->create($request->all());
-        return response()-> json($book['message'],$book['statusCode']);
 
+        $book = $this->bookService->create($request->all());
+        return response()->json($book['message'], $book['statusCode']);
     }
 
     /**
@@ -69,9 +67,9 @@ class BookController extends Controller
      */
     public function show($id)
     {
-        $bookShow=$this->bookService->getById($id);
+        $bookShow = $this->bookService->getById($id);
 
-        return  response()->json($bookShow['book'],$bookShow['statusCode']);
+        return  response()->json($bookShow['book'], $bookShow['statusCode']);
     }
     /**
      * Update the specified resource in storage.
@@ -83,10 +81,9 @@ class BookController extends Controller
     public function update(Request $request, $id)
     {
         //
-//        dd($request->post());
-        $bookUpdate=$this->bookService->update($request->post(),$id);
-        return response()->json($bookUpdate['book'],$bookUpdate['statusCode']);
-
+        //        dd($request->post());
+        $bookUpdate = $this->bookService->update($request->post(), $id);
+        return response()->json($bookUpdate['book'], $bookUpdate['statusCode']);
     }
 
     /**
@@ -98,7 +95,7 @@ class BookController extends Controller
     public function destroy($id)
     {
 
-        $bookDelete=$this->bookService->destroy($id);
-        return response()->json($bookDelete['message'],$bookDelete['statusCode']);
+        $bookDelete = $this->bookService->destroy($id);
+        return response()->json($bookDelete['message'], $bookDelete['statusCode']);
     }
 }
