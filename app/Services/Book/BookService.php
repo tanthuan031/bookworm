@@ -28,10 +28,12 @@ class BookService extends BaseServices
             if ($perPage == null || !is_numeric($perPage)) {
                 $perPage = 5;
             }
+            // if ($request->has('author_id') || $request->has('category_id')) {
+            //     dd('a');
+            //     $data = $this->fillter($request, $perPage);
+            // } else
+            if ($request->has('list_books') || $request->has('author_id') || $request->has('category_id')) {
 
-            if ($request->has('author_id') || $request->has('category_id')) {
-                $data = $this->fillter($request, $perPage);
-            } elseif ($request->has('list_books')) {
                 $data = $this->getBookHomeSale_Feature($request, $perPage);
             } elseif ($request->has('sort')) {
                 $sort = $request['sort'];
@@ -41,9 +43,11 @@ class BookService extends BaseServices
             }
         } else {
 
-            if ($request->has('author_id') || $request->has('category_id')) {
-                $data = $this->fillter($request, $perPage);
-            } elseif ($request->has('list_books')) {
+
+            // if ($request->has('author_id') || $request->has('category_id')) {
+            //     $data = $this->fillter($request, $perPage);
+            // } else
+            if ($request->has('list_books') || $request->has('author_id') || $request->has('category_id')) {
                 $data = $this->getBookHomeSale_Feature($request, $perPage);
             } else {
                 $data = $this->bookRepository->getAll('desc', $perPage);
@@ -106,27 +110,33 @@ class BookService extends BaseServices
         $onSale = '';
         $featured = '';
         $listBook = [];
+        $cdtCategory = $conditions['category_id'] ? $conditions['category_id'] : '';
+        $cdtAuthor = $conditions['author_id'] ? $conditions['author_id'] : '';
         //        http://bookworm-app.local:8000/api/books?list_books=onsale
         if ($conditions->has('list_books')) {
             if ($conditions['list_books'] == 'on-sale' || $conditions['list_books'] == 'on-sale-sort') {
 
                 $onSale = $conditions['list_books'];
-                $listBook = $this->bookRepository->getHomeBookOnSale_Featured($onSale, $featured, $perPage);
+
+
+                $listBook = $this->bookRepository->getHomeBookOnSale_Featured($onSale, $featured, $cdtAuthor, $cdtCategory, $perPage);
             } //http://bookworm-app.local:8000/api/books?list_books=featured-recommend
             elseif ($conditions['list_books'] == 'featured-recommend' || $conditions['list_books'] == 'featured-recommend-sort') {
 
                 $featured = $conditions['list_books'];
-                $listBook = $this->bookRepository->getHomeBookOnSale_Featured($onSale, $featured, $perPage);
+                $listBook = $this->bookRepository->getHomeBookOnSale_Featured($onSale, $featured, $cdtAuthor, $cdtCategory, $perPage);
             } //http://bookworm-app.local:8000/api/books?list_books=featured-popular
             elseif ($conditions['list_books'] == 'featured-popular' || $conditions['list_books'] == 'featured-popular-sort') {
                 $featured = $conditions['list_books'];
-                $listBook = $this->bookRepository->getHomeBookOnSale_Featured($onSale, $featured, $perPage);
+                $listBook = $this->bookRepository->getHomeBookOnSale_Featured($onSale, $featured, $cdtAuthor, $cdtCategory, $perPage);
             } elseif ($conditions['list_books'] == 'asc' || $conditions['list_books'] == 'desc') {
                 $sort = $conditions['list_books'];
                 $listBook = $this->bookRepository->getAll($sort, $perPage);
             } else {
                 $listBook = [];
             }
+        } elseif ($conditions->has('author_id') || $conditions->has('category_id')) {
+            $listBook = $this->fillter($conditions, $perPage);
         }
 
         return $listBook;

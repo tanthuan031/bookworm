@@ -25,8 +25,9 @@ class BookRepository
                                       discount.discount_end_date,
                                       case when (discount.discount_end_date - discount.discount_start_date) < 0 or discount.discount_price  is null  then book.book_price
                                            when (discount.discount_end_date - discount.discount_start_date) >0 or (discount.discount_end_date - discount.discount_start_date) is null  then discount.discount_price
-                                      end as final_price')
+                                      end as final_price,avg(review.rating_start) as average_star')
             ->leftJoin('discount', 'book.id', '=', 'discount.book_id')
+            ->leftJoin('review', 'book.id', '=', 'review.book_id')
             ->groupBy(
                 'book.id',
                 'book.author_id',
@@ -71,6 +72,13 @@ class BookRepository
                     $this->query->whereIn('category_id', $cdtCategory);
                 }
             }
+            // if ($cdtStar != null) { {
+            //         $this->query
+            //         ->selectRaw('book.id,book.author_id,author.author_name ,book.book_title , book.book_price ,book.book_cover_photo,book.discount_price, avg(review.rating_start) as average_star')
+            //         ->
+            //         whereIn('category_id', $cdtCategory);
+            //     }
+            // }
 
 
             $this->query->with('author');
@@ -81,7 +89,7 @@ class BookRepository
         }
     }
 
-    public function getHomeBookOnSale_Featured($onSale, $featured, $perPage)
+    public function getHomeBookOnSale_Featured($onSale, $featured, $author_id, $category_id, $perPage)
     {
         // TODO: Implement getHomeBookOnSale_Featured() meth od.
         //        dd($onSale,$featured);
@@ -89,12 +97,13 @@ class BookRepository
         if (!empty($onSale) && empty($featured)) {
             //            dd($onSale);
             $this->query
-                ->select('book.id', 'book.author_id', 'author.author_name', 'book.book_title', 'book.book_summary', 'book.book_price', 'book.book_cover_photo', 'discount.discount_price', Book::raw('avg(review.rating_start) as average_star'))
+                ->select('book.id', 'book.category_id', 'book.author_id', 'author.author_name', 'book.book_title', 'book.book_summary', 'book.book_price', 'book.book_cover_photo', 'discount.discount_price', Book::raw('avg(review.rating_start) as average_star'))
                 ->leftJoin('discount', 'book.id', '=', 'discount.book_id')
                 ->join('author', 'book.author_id', '=', 'author.id')
-                ->join('review', 'book.id', '=', 'review.book_id')
+                ->leftJoin('review', 'book.id', '=', 'review.book_id')
                 ->groupBy(
                     'book.id',
+                    'book.category_id',
                     'book.author_id',
                     'author.author_name',
                     'book.book_title',
@@ -109,6 +118,12 @@ class BookRepository
                 ->orHavingNull(Book::raw('discount.discount_end_date - discount.discount_start_date'))
                 ->orderByRaw('book.book_price - discount.discount_price desc NULLS LAST');
             if ($onSale == 'on-sale-sort') {
+                if (!empty($author_id)) {
+                    $this->query->where('author_id', '=', $author_id);
+                }
+                if (!empty($category_id)) {
+                    $this->query->where('category_id', '=', $category_id);
+                }
                 $this->query->with('discount');
                 $this->query->with('author');
                 return $this->query->paginate($perPage);
@@ -122,10 +137,11 @@ class BookRepository
         } //        getHome with featured-recommend
         elseif (empty($onSale) && !empty($featured) && ($featured == 'featured-recommend' || $featured == 'featured-recommend-sort')) {
             //            $listBooksHome = ['Featured-recommend'];
+            // dd($author_id, $category_id);
             $this->query
-                ->selectRaw('bs.id,bs.author_id,author.author_name,bs.book_title,bs.book_price,bs.book_cover_photo,bs.discount_price, sum(bs.sumStar)/sum(bs.countStar) as average_star, bs.final_price')
+                ->selectRaw('bs.id,bs.author_id,bs.category_id,author.author_name,bs.book_title,bs.book_price,bs.book_cover_photo,bs.discount_price, sum(bs.sumStar)/sum(bs.countStar) as average_star, bs.final_price')
                 ->from(function ($q) {
-                    $q->selectRaw('book.id ,book.author_id,book.book_title ,book.book_price,book.book_cover_photo , discount.discount_price ,discount.discount_start_date ,
+                    $q->selectRaw('book.id ,book.author_id,book.category_id,book.book_title ,book.book_price,book.book_cover_photo , discount.discount_price ,discount.discount_start_date ,
                                       discount.discount_end_date ,  review.rating_start*count(review.rating_start) as sumStar ,count(review.rating_start) as countStar,
                                       case when (discount.discount_end_date - discount.discount_start_date) < 0 or discount.discount_price  is null  then book.book_price
                                            when (discount.discount_end_date - discount.discount_start_date) >0 or (discount.discount_end_date - discount.discount_start_date) is null  then discount.discount_price
@@ -134,6 +150,7 @@ class BookRepository
                         ->leftJoin('review', 'book.id', '=', 'review.book_id')
                         ->groupBy(
                             'book.id',
+                            'book.category_id',
                             'book.author_id',
                             'book.book_title',
                             'book.book_price',
@@ -145,10 +162,16 @@ class BookRepository
                         );
                 }, 'bs')
                 ->join('author', 'bs.author_id', '=', 'author.id')
-                ->groupBy('bs.id', 'bs.author_id', 'author.author_name', 'bs.book_title', 'bs.book_price', 'bs.discount_price', 'bs.book_cover_photo', 'bs.discount_start_date', 'bs.discount_end_date', 'bs.final_price')
+                ->groupBy('bs.id', 'bs.author_id', 'bs.category_id', 'author.author_name', 'bs.book_title', 'bs.book_price', 'bs.discount_price', 'bs.book_cover_photo', 'bs.discount_start_date', 'bs.discount_end_date', 'bs.final_price')
                 ->orderByRaw('average_star desc NULLS LAST')
                 ->orderBy('final_price');
             if ($featured == 'featured-recommend-sort') {
+                if (!empty($author_id)) {
+                    $this->query->where('author_id', '=', $author_id);
+                }
+                if (!empty($category_id)) {
+                    $this->query->where('category_id', '=', $category_id);
+                }
                 $this->query->with('discount');
                 $this->query->with('author');
                 return $this->query->paginate($perPage);
@@ -162,21 +185,27 @@ class BookRepository
             //            $listBooksHome = ['Featured-popular'];
             //            dd($featured);
             $this->query
-                ->selectRaw('book.id,book.author_id,author.author_name ,book.book_title , book.book_price , discount.discount_price,
+                ->selectRaw('book.id,book.category_id,book.author_id,author.author_name ,book.book_title , book.book_price , discount.discount_price,
                               case
                                   when (discount.discount_end_date - discount.discount_start_date) < 0
                                        or discount.discount_price  is null  then book.book_price
                                   when (discount.discount_end_date - discount.discount_start_date) >0
                                        or (discount.discount_end_date - discount.discount_start_date) is null  then discount.discount_price
-                              end as final_price ,count(review.book_id) as count_review')
+                              end as final_price ,count(review.book_id) as count_review, avg(review.rating_start) as average_star')
                 ->leftJoin('discount', 'book.id', '=', 'discount.book_id')
                 ->leftJoin('review', 'book.id', '=', 'review.book_id')
                 ->join('author', 'book.author_id', '=', 'author.id')
-                ->groupBy('book.id', 'book.author_id', 'author.author_name', 'book.book_title', 'book.book_price', 'book.book_cover_photo', 'discount.discount_price', 'discount.discount_start_date', 'discount.discount_end_date', 'review.book_id')
+                ->groupBy('book.id', 'book.author_id', 'book.category_id', 'author.author_name', 'book.book_title', 'book.book_price', 'book.book_cover_photo', 'discount.discount_price', 'discount.discount_start_date', 'discount.discount_end_date', 'review.book_id')
                 ->orderBy('count_review', 'desc')
                 ->orderBy('final_price', 'asc');
 
             if ($featured == 'featured-popular-sort') {
+                if (!empty($author_id)) {
+                    $this->query->where('author_id', '=', $author_id);
+                }
+                if (!empty($category_id)) {
+                    $this->query->where('category_id', '=', $category_id);
+                }
                 $this->query->with('discount');
                 $this->query->with('author');
                 return $this->query->paginate($perPage);
