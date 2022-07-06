@@ -72,15 +72,6 @@ class BookRepository
                     $this->query->whereIn('category_id', $cdtCategory);
                 }
             }
-            // if ($cdtStar != null) { {
-            //         $this->query
-            //         ->selectRaw('book.id,book.author_id,author.author_name ,book.book_title , book.book_price ,book.book_cover_photo,book.discount_price, avg(review.rating_start) as average_star')
-            //         ->
-            //         whereIn('category_id', $cdtCategory);
-            //     }
-            // }
-
-
             $this->query->with('author');
             $this->query->with('discount');
             //            dd( $this->query->toSql());
@@ -89,13 +80,13 @@ class BookRepository
         }
     }
 
-    public function getHomeBookOnSale_Featured($onSale, $featured, $author_id, $category_id, $perPage)
+    public function getHomeBookOnSale_Featured($onSale, $featured, $author_id, $category_id, $review_star_id, $perPage)
     {
         // TODO: Implement getHomeBookOnSale_Featured() meth od.
         //        dd($onSale,$featured);
         //       getHome with onSale
         if (!empty($onSale) && empty($featured)) {
-            //            dd($onSale);
+            // dd($review_star_id);
             $this->query
                 ->select('book.id', 'book.category_id', 'book.author_id', 'author.author_name', 'book.book_title', 'book.book_summary', 'book.book_price', 'book.book_cover_photo', 'discount.discount_price', Book::raw('avg(review.rating_start) as average_star'))
                 ->leftJoin('discount', 'book.id', '=', 'discount.book_id')
@@ -124,8 +115,17 @@ class BookRepository
                 if (!empty($category_id)) {
                     $this->query->where('category_id', '=', $category_id);
                 }
+                // if (!empty($review_star_id)) {
+                //     // dd('aa');
+                //     $this->query->having(
+                //         Book::raw('avg(review.rating_start)'),
+                //         '>=',
+                //         $review_star_id
+                //     );
+                // }
                 $this->query->with('discount');
                 $this->query->with('author');
+                // dd($this->query->toSql());
                 return $this->query->paginate($perPage);
             } else {
                 $this->query->with('discount');
@@ -172,6 +172,13 @@ class BookRepository
                 if (!empty($category_id)) {
                     $this->query->where('category_id', '=', $category_id);
                 }
+                // if (!empty($review_star_id)) {
+                //     $this->query->having(
+                //         Book::raw('sum(bs.sumStar)/sum(bs.countStar)'),
+                //         '>=',
+                //         $review_star_id
+                //     );
+                // }
                 $this->query->with('discount');
                 $this->query->with('author');
                 return $this->query->paginate($perPage);
@@ -206,6 +213,13 @@ class BookRepository
                 if (!empty($category_id)) {
                     $this->query->where('category_id', '=', $category_id);
                 }
+                // if (!empty($review_star_id)) {
+                //     $this->query->having(
+                //         Book::raw('avg(review.rating_start)'),
+                //         '>=',
+                //         $review_star_id
+                //     );
+                // }
                 $this->query->with('discount');
                 $this->query->with('author');
                 return $this->query->paginate($perPage);
@@ -217,7 +231,42 @@ class BookRepository
             }
         }
     }
-
+    public function getAllBookAVGRatingStar($filter_star, $perPage = 5)
+    {
+        $this->query
+            ->selectRaw('bs.id,bs.author_id,bs.category_id,author.author_name,bs.book_title,bs.book_price,bs.book_cover_photo,bs.discount_price, sum(bs.sumStar)/sum(bs.countStar) as average_star, bs.final_price')
+            ->from(function ($q) {
+                $q->selectRaw('book.id ,book.author_id,book.category_id,book.book_title ,book.book_price,book.book_cover_photo , discount.discount_price ,discount.discount_start_date ,
+                                      discount.discount_end_date ,  review.rating_start*count(review.rating_start) as sumStar ,count(review.rating_start) as countStar,
+                                      case when (discount.discount_end_date - discount.discount_start_date) < 0 or discount.discount_price  is null  then book.book_price
+                                           when (discount.discount_end_date - discount.discount_start_date) >0 or (discount.discount_end_date - discount.discount_start_date) is null  then discount.discount_price
+                                      end as final_price from book')
+                    ->leftJoin('discount', 'book.id', '=', 'discount.book_id')
+                    ->leftJoin('review', 'book.id', '=', 'review.book_id')
+                    ->groupBy(
+                        'book.id',
+                        'book.category_id',
+                        'book.author_id',
+                        'book.book_title',
+                        'book.book_price',
+                        'book.book_cover_photo',
+                        'discount.discount_price',
+                        'discount.discount_start_date',
+                        'discount.discount_end_date',
+                        'review.rating_start',
+                    );
+            }, 'bs')
+            ->join('author', 'bs.author_id', '=', 'author.id')
+            ->groupBy('bs.id', 'bs.author_id', 'bs.category_id', 'author.author_name', 'bs.book_title', 'bs.book_price', 'bs.discount_price', 'bs.book_cover_photo', 'bs.discount_start_date', 'bs.discount_end_date', 'bs.final_price')
+            ->orderByRaw('average_star desc NULLS LAST')
+            ->orderBy('final_price');
+        if (!empty($filter_star) && is_numeric($filter_star)) {
+            $this->query->having(Book::raw('sum(bs.sumStar)/sum(bs.countStar)'), '>=', $filter_star);
+        }
+        // $this->query->with('discount');
+        // $this->query->with('author');
+        return $this->query->paginate($perPage);
+    }
     public function create($data)
     {
         // TODO: Implement create() method.
