@@ -6,7 +6,7 @@ use App\Repositories\CategoryRepository;
 use App\Services\Category\CategoryService;
 use Illuminate\Http\Request;
 
-class Category extends Controller
+class CategoryController extends Controller
 {
     /**
      * Display a listing of the resource.
