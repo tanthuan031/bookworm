@@ -89,9 +89,10 @@ class BookRepository
         if (!empty($onSale) && empty($featured)) {
             //            dd($onSale);
             $this->query
-                ->select('book.id', 'book.author_id', 'author.author_name', 'book.book_title', 'book.book_summary', 'book.book_price', 'book.book_cover_photo', 'discount.discount_price')
+                ->select('book.id', 'book.author_id', 'author.author_name', 'book.book_title', 'book.book_summary', 'book.book_price', 'book.book_cover_photo', 'discount.discount_price', Book::raw('avg(review.rating_start) as average_star'))
                 ->leftJoin('discount', 'book.id', '=', 'discount.book_id')
                 ->join('author', 'book.author_id', '=', 'author.id')
+                ->join('review', 'book.id', '=', 'review.book_id')
                 ->groupBy(
                     'book.id',
                     'book.author_id',
