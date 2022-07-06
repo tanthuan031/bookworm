@@ -22,7 +22,7 @@ class ReviewController extends Controller
     {
         //
 
-        return $this->review->getAllAVGRatingStar($request);
+        // return $this->review->getAllAVGRatingStar($request);
         // return $this->review->getBookAVGRatingStar(50);
     }
 
