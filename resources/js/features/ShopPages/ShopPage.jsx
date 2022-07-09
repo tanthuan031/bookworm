@@ -11,7 +11,6 @@ import {
 } from "react-bootstrap";
 import slide from "../../../assets/bookcover/book1.jpg";
 import { Link, useParams } from "react-router-dom";
-import Category from "./Category";
 import { IoStar, IoStarOutline } from "react-icons/io5";
 import Products from "./Products";
 import booksApi from "../../api/booksApi";
@@ -21,10 +20,18 @@ import {
     selectBookFillter,
     selectBookList,
 } from "../../redux/Books/bookSlice";
+import {
+    categoryAction,
+    selectCategoryList,
+} from "../../redux/Category/CategorySlide";
+import FilterBy from "./FilterBy";
 
 export default function ShopPage() {
     const filter = useSelector(selectBookFillter);
     const dispatch = useDispatch();
+    // **************************
+    // Products
+    // Get data listBook
     useEffect(() => {
         dispatch(
             bookActions.fetchBookList({
@@ -37,12 +44,12 @@ export default function ShopPage() {
             })
         );
     }, [dispatch, filter]);
-    console.log("fil", filter);
+    // console.log("fil", filter);
     // useEffect(() => {
     //     booksApi.getAll().then((response)=>console.log(response.data));
     // })
     const handlePageChange = (page) => {
-        console.log("page11", page);
+        // console.log("page11", page);
         dispatch(
             bookActions.setFilter({
                 ...filter,
@@ -50,6 +57,7 @@ export default function ShopPage() {
             })
         );
     };
+    // Show page (5,15,25)
     const handleLimitPage = (per_page) => {
         console.log("jh", per_page);
         dispatch(
@@ -65,15 +73,59 @@ export default function ShopPage() {
             bookActions.setFilter({
                 ...filter,
                 list_books: sort,
+                star: null,
             })
         );
     };
-    // console.log("fil", filter);
+
+    // Handle Filter Category
+    const hadleFilterCategory = (id) => {
+        // console.log(id);
+        dispatch(
+            bookActions.setFilter({
+                ...filter,
+                category_id: id != 0 ? id : null,
+                star: null,
+            })
+        );
+    };
+
+    // Handle Filter Author
+    const hadleFilterAuthor = (id) => {
+        // console.log(id);
+        dispatch(
+            bookActions.setFilter({
+                ...filter,
+                author_id: id != 0 ? id : null,
+                star: null,
+            })
+        );
+    };
+
+    // Handle Filter Star
+
+    const hadleFilterStar = (id) => {
+        console.log(id);
+        dispatch(
+            bookActions.setFilter({
+                ...filter,
+                star: id != 0 ? id : null,
+                list_books: null,
+                author_id: null,
+                category_id: null,
+                page: 1,
+            })
+        );
+    };
     return (
         <Container className="shop-page">
             <Row>
                 <Col md={2} className="shop-page-filter">
-                    <Category />
+                    <FilterBy
+                        onFilterByCategory={hadleFilterCategory}
+                        onFilterByAuthor={hadleFilterAuthor}
+                        onFilterByStar={hadleFilterStar}
+                    />
                 </Col>
                 <Col md={10} className="ml-5">
                     <Products

@@ -50,7 +50,10 @@ export default function OnSale() {
                     <h4>On Sale</h4>
                 </Col>
                 <Col md={5} className="btn-view-all">
-                    <Link to="/shop" className="btn btn-info shadow-none ">
+                    <Link
+                        to="/shop"
+                        className="btn custom-button-default shadow-none "
+                    >
                         View All
                     </Link>
                 </Col>
@@ -80,7 +83,10 @@ export default function OnSale() {
                     >
                         {onSale.map((itemOnsale, index) => (
                             <SwiperSlide>
-                                <Link to="/shop/1" className="card ">
+                                <Link
+                                    to={`/shop/${itemOnsale.id}`}
+                                    className="card "
+                                >
                                     <Card.Img
                                         variant="top"
                                         // src={slide}
@@ -99,11 +105,90 @@ export default function OnSale() {
                                             {itemOnsale.author.author_name}
                                         </Card.Text>
                                         <div className="star-body">
-                                            <IoStar className="star-checked" />
-                                            <IoStar className="star-checked" />
-                                            <IoStar className="star-checked" />
-                                            <IoStarOutline />
-                                            <IoStarOutline />
+                                            {(() => {
+                                                if (
+                                                    itemOnsale.average_star <
+                                                        2 &&
+                                                    itemOnsale.average_star >= 1
+                                                ) {
+                                                    return (
+                                                        <>
+                                                            <IoStar className="star-checked" />
+                                                            <IoStarOutline />
+                                                            <IoStarOutline />
+                                                            <IoStarOutline />
+                                                            <IoStarOutline />
+                                                        </>
+                                                    );
+                                                } else if (
+                                                    itemOnsale.average_star >=
+                                                        2 &&
+                                                    itemOnsale.average_star < 3
+                                                ) {
+                                                    return (
+                                                        <>
+                                                            <IoStar className="star-checked" />
+                                                            <IoStar className="star-checked" />
+                                                            <IoStarOutline />
+                                                            <IoStarOutline />
+                                                            <IoStarOutline />
+                                                        </>
+                                                    );
+                                                } else if (
+                                                    itemOnsale.average_star >=
+                                                        3 &&
+                                                    itemOnsale.average_star < 4
+                                                ) {
+                                                    return (
+                                                        <>
+                                                            <IoStar className="star-checked" />
+                                                            <IoStar className="star-checked" />
+                                                            <IoStar className="star-checked" />
+                                                            <IoStarOutline />
+                                                            <IoStarOutline />
+                                                        </>
+                                                    );
+                                                } else if (
+                                                    itemOnsale.average_star >=
+                                                        4 &&
+                                                    itemOnsale.average_star < 5
+                                                ) {
+                                                    return (
+                                                        <>
+                                                            <IoStar className="star-checked" />
+                                                            <IoStar className="star-checked" />
+                                                            <IoStar className="star-checked" />
+                                                            <IoStar className="star-checked" />
+                                                            <IoStarOutline />
+                                                        </>
+                                                    );
+                                                } else if (
+                                                    itemOnsale.average_star >=
+                                                        5 &&
+                                                    itemOnsale.average_star < 6
+                                                ) {
+                                                    return (
+                                                        <>
+                                                            <IoStar className="star-checked" />
+                                                            <IoStar className="star-checked" />
+                                                            <IoStar className="star-checked" />
+                                                            <IoStar className="star-checked" />
+                                                            <IoStar className="star-checked" />
+                                                            <IoStar className="star-checked" />
+                                                        </>
+                                                    );
+                                                } else {
+                                                    return (
+                                                        <>
+                                                            <IoStarOutline />
+                                                            <IoStarOutline />
+                                                            <IoStarOutline />
+                                                            <IoStarOutline />
+                                                            <IoStarOutline />
+                                                        </>
+                                                    );
+                                                }
+                                            })()}
                                         </div>
                                     </Card.Body>
                                     <Card.Footer>

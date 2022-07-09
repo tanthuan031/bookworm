@@ -29,6 +29,7 @@ export default function Products({
 }) {
     // Show btn sort onSale...
     const bookList = useSelector(selectBookList);
+    console.log("bookList", bookList);
     const bookListPagination = useSelector(selectBookPagination);
     // define value of sort field
     const nameSort = {
@@ -41,6 +42,7 @@ export default function Products({
     };
     // console.log(nameSort[1]);
     const [key, setIndex] = useState("Sort by on sale");
+    // Show sort order
     const handleSelect = (selectedIndex, e) => {
         setIndex(nameSort[selectedIndex]);
         if (!onChangeSort) return;
@@ -58,7 +60,6 @@ export default function Products({
     };
 
     // Pagination
-
     const perPage = bookListPagination.perPage;
     // const currentPage = bookListPagination.current_page;
     const totalBooks = bookListPagination.toTalPage;
@@ -78,7 +79,7 @@ export default function Products({
         //  put data about parent
         onPageChange(page);
     };
-    // console.log(dataPage);
+    console.log("bookList", bookList);
     return (
         <div>
             <Container fluid>
@@ -87,7 +88,7 @@ export default function Products({
                         Show {keyShow} in {totalBooks} books
                     </Col>
                     <Col md={8}>
-                        <div className="mb-3 btn-shop-page-product  ">
+                        <div className="mb-3 btn-shop-page-product   ">
                             <DropdownButton
                                 as={ButtonGroup}
                                 title={key}
@@ -187,11 +188,85 @@ export default function Products({
                                             {book.author.author_name}
                                         </Card.Text>
                                         <div className="star-body">
-                                            <IoStar className="star-checked" />
-                                            <IoStar className="star-checked" />
-                                            <IoStar className="star-checked" />
-                                            <IoStarOutline />
-                                            <IoStarOutline />
+                                            {(() => {
+                                                if (
+                                                    book.average_star < 2 &&
+                                                    book.average_star >= 1
+                                                ) {
+                                                    return (
+                                                        <>
+                                                            <IoStar className="star-checked" />
+                                                            <IoStarOutline />
+                                                            <IoStarOutline />
+                                                            <IoStarOutline />
+                                                            <IoStarOutline />
+                                                        </>
+                                                    );
+                                                } else if (
+                                                    book.average_star >= 2 &&
+                                                    book.average_star < 3
+                                                ) {
+                                                    return (
+                                                        <>
+                                                            <IoStar className="star-checked" />
+                                                            <IoStar className="star-checked" />
+                                                            <IoStarOutline />
+                                                            <IoStarOutline />
+                                                            <IoStarOutline />
+                                                        </>
+                                                    );
+                                                } else if (
+                                                    book.average_star >= 3 &&
+                                                    book.average_star < 4
+                                                ) {
+                                                    return (
+                                                        <>
+                                                            <IoStar className="star-checked" />
+                                                            <IoStar className="star-checked" />
+                                                            <IoStar className="star-checked" />
+                                                            <IoStarOutline />
+                                                            <IoStarOutline />
+                                                        </>
+                                                    );
+                                                } else if (
+                                                    book.average_star >= 4 &&
+                                                    book.average_star < 5
+                                                ) {
+                                                    return (
+                                                        <>
+                                                            <IoStar className="star-checked" />
+                                                            <IoStar className="star-checked" />
+                                                            <IoStar className="star-checked" />
+                                                            <IoStar className="star-checked" />
+                                                            <IoStarOutline />
+                                                        </>
+                                                    );
+                                                } else if (
+                                                    book.average_star >= 5 &&
+                                                    book.average_star < 6
+                                                ) {
+                                                    return (
+                                                        <>
+                                                            <IoStar className="star-checked" />
+                                                            <IoStar className="star-checked" />
+                                                            <IoStar className="star-checked" />
+                                                            <IoStar className="star-checked" />
+                                                            <IoStar className="star-checked" />
+                                                            <IoStar className="star-checked" />
+                                                        </>
+                                                    );
+                                                } else {
+                                                    return (
+                                                        <>
+                                                            <IoStarOutline />
+                                                            <IoStarOutline />
+                                                            <IoStarOutline />
+                                                            <IoStarOutline />
+                                                            <IoStarOutline />
+                                                        </>
+                                                    );
+                                                }
+                                            })()}
                                         </div>
                                     </Card.Body>
                                     <Card.Footer>
@@ -243,10 +318,7 @@ export default function Products({
                         />
                     </div> */}
 
-                    <div
-                        className="pagination-wrapper"
-                        style={{ marginLeft: "30%" }}
-                    >
+                    <div className="pagination-wrapper ">
                         <Pagination
                             aria-label="Page navigation example"
                             itemClass="page-item"

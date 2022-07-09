@@ -1,7 +1,14 @@
 import React, { useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import logo from "../../../assets/bookcover/logo.jpg";
-import { Button, Form, Image, Modal } from "react-bootstrap";
+import { Button, Form, Image, Modal, Toast } from "react-bootstrap";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import {
+    globalAction,
+    selectglobalState,
+} from "../../redux/glocal/globalSlide";
+import { useSelector } from "react-redux";
 export default function Header() {
     // Show login
     const [show, setShow] = useState(false);
@@ -13,6 +20,22 @@ export default function Header() {
 
     //     }
     // }
+    // Show totalCart
+    const toTalCart = JSON.parse(localStorage.getItem("total_cart"))
+        ? JSON.parse(localStorage.getItem("total_cart"))
+        : 0;
+
+    const dispatch = useDispatch();
+    useEffect(() => {
+        dispatch(
+            globalAction.fetchglobalStateTotalCart({
+                totalCart: toTalCart,
+            })
+        );
+    }, [dispatch]);
+    const totalCartBook = useSelector(selectglobalState);
+    console.log(totalCartBook);
+    // setTotalCart(totalCartBook);
 
     return (
         <header className="header">
@@ -67,7 +90,7 @@ export default function Header() {
                                         isActive ? "link-active" : "nav-link"
                                     }
                                 >
-                                    Cart
+                                    <span> Cart({totalCartBook})</span>
                                 </NavLink>
                             </li>
                             <li className="nav-item">

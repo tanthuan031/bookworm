@@ -5,7 +5,9 @@ const initialState={
     loading:false,
     loadingHomePage_Feature:false,
     loadingHomePage_OnSale:false,
+    loadingBookId:false,
     list:[],
+    getBookId:[],
     getBookHomePage_Feature:[],
     getBookHomePage_OnSale:[],
     filter:{
@@ -20,6 +22,9 @@ const initialState={
         list_books:'featured-recommend',
     },filterHomePage_OnSale:{
         list_books:'on-sale',
+    },
+    filterBookId:{
+        idBook:'',
     },
     pagination:{
         current_page:1,
@@ -99,6 +104,22 @@ export const bookSlide=createSlice({
                 // console.log('setFilter',action.payload);
         },
 
+        // /************************************************************************** */
+        // getBookID
+        fetchBookId(state,action){
+                state.loadingBookId=true;
+                //  console.log('slidqqqe', action.payload.idBook.productId);       
+        },
+        fetchBookIdSuccess(state ,action){
+            console.log('dli',action.payload.data);
+            state.getBookId=action.payload.data.data;
+            state.loadingBookId=false;
+        }, 
+        fetchBookIdError(state,action){
+             state.loadingBookId=false;
+        },
+   
+
 
     },
 })
@@ -122,7 +143,10 @@ export const selectBookListHomepage_OnSale=(state)=>state.books.getBookHomePage_
 export const selectBookHomePageLoading_OnSale=(state)=>state.books.loadingHomePage_OnSale;
 export const selectBookHomePageFillter_OnSale=(state)=>state.books.filterHomePage_OnSale;
 
+// getBookId
 
+export const selectBookId=(state)=>state.books.getBookId;
+export const selectBookIdLoading=(state)=>state.books.loadingBookId;
 
 // Reducer
 const bookReducer = bookSlide.reducer;
