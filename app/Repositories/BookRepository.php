@@ -54,7 +54,33 @@ class BookRepository
     public function getById($id)
     {
         // TODO: Implement getById() method.
+        $this->query
+
+            ->selectRaw('book.id ,book.author_id,book.book_title ,category.category_name,author.author_name,author.author_bio,book.book_summary,book.book_price,book.book_cover_photo , discount.discount_price ,discount.discount_start_date ,
+                                      discount.discount_end_date,
+                                      case when (discount.discount_end_date - discount.discount_start_date) < 0 or discount.discount_price  is null  then book.book_price
+                                           when (discount.discount_end_date - discount.discount_start_date) >0 or (discount.discount_end_date - discount.discount_start_date) is null  then discount.discount_price
+                                      end as final_price,avg(review.rating_start) as average_star')
+            ->leftJoin('discount', 'book.id', '=', 'discount.book_id')
+            ->leftJoin('review', 'book.id', '=', 'review.book_id')
+            ->join('category', 'book.category_id', '=', 'category.id')
+            ->join('author', 'author_id', '=', 'author.id')
+            ->groupBy(
+                'book.id',
+                'category.category_name',
+                'book.book_summary',
+                'author.author_name',
+                'author.author_bio',
+                'book.author_id',
+                'book.book_title',
+                'book.book_price',
+                'book.book_cover_photo',
+                'discount.discount_price',
+                'discount.discount_start_date',
+                'discount.discount_end_date'
+            );
         $this->query->with('discount');
+        // $this->query->with('author');
         return $this->query->find($id);
     }
 
@@ -263,8 +289,8 @@ class BookRepository
         if (!empty($filter_star) && is_numeric($filter_star)) {
             $this->query->having(Book::raw('sum(bs.sumStar)/sum(bs.countStar)'), '>=', $filter_star);
         }
-        // $this->query->with('discount');
-        // $this->query->with('author');
+        $this->query->with('discount');
+        $this->query->with('author');
         return $this->query->paginate($perPage);
     }
     public function create($data)

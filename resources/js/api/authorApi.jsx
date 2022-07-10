@@ -2,7 +2,7 @@ import axiosClient from "./axiosClient";
 
 const authorApi = {
     getAll() {
-        const url = "/author";
+        const url = "/api/author";
 
         return axiosClient.get(url);
     },

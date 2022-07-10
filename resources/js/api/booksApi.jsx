@@ -2,13 +2,13 @@ import axiosClient from "./axiosClient";
 
 const booksApi = {
     getAll(params) {
-        const url = "/books";
+        const url = "api/books";
         return axiosClient.get(url, {
             params,
         });
     },
     getBookHomePage(params) {
-        const url = "/books";
+        const url = "api/books";
         // console.log("page", params.filter);
         return axiosClient.get(url, {
             params,
@@ -16,7 +16,7 @@ const booksApi = {
     },
     getBookById(params) {
         const id = params.idBook.productId;
-        const url = `/books/${id}`;
+        const url = `api/books/${id}`;
         return axiosClient.get(url);
         // console.log("page", axiosClient.get(url));
     },

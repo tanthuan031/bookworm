@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/";
 import Welcome from "./welcome";
-import { HashRouter, Route, Routes } from "react-router-dom";
+import { HashRouter, Route, Routes, Router } from "react-router-dom";
 import Header from "./features/Layout/Header";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min";
@@ -13,7 +13,8 @@ import ProductPage from "./features/ProductPage/ProductPage";
 import CartPage from "./features/CartPage/CartPage";
 import { Provider } from "react-redux";
 import { store } from "./redux/store";
-
+import { history } from "./utils/history";
+import { ConnectedRouter } from "connected-react-router";
 
 ReactDOM.render(
     <Provider store={store}>
@@ -31,5 +32,6 @@ ReactDOM.render(
             <Footer />
         </HashRouter>
     </Provider>,
+
     document.getElementById("root")
 );

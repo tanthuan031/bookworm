@@ -37,6 +37,8 @@ main {
 /* Margin */
 .margin-Top {
     margin-top: 100px;
+    overflow-x: hidden !important;
+    /* min-height: 72vh; */
 }
 .margin_right-5 {
     margin-right: 20px;
@@ -61,9 +63,12 @@ main {
     border: none !important;
     outline: none !important;
     box-shadow: none !important;
+    background-color: #f75454 !important;
+    color: #fff !important;
 }
 .custom-button-default:focus,
 .custom-button-default:active {
+    color: #fff !important;
     border: none !important;
     outline: none !important;
     box-shadow: none !important;
@@ -77,17 +82,41 @@ main {
     transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
         border-color 0.15s ease-in-out;
 }
+.custom-title-hiden {
+    display: -webkit-box;
+    -webkit-line-clamp: 1; /* số dòng hiển thị */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.custom-text-red {
+    color: red !important;
+    font-weight: 600 !important;
+}
+.custom-text-white {
+    color: white !important;
+    /* font-weight: 600 !important; */
+}
 /*Button*/
 .btn-info {
     cursor: pointer !important;
 }
 
 /*HEADER*/
+/* .card-footer {
+    position: absolute;
+    bottom: 0px;
+    width: 100%;
+} */
 .header {
     position: fixed;
     z-index: 100;
     width: 100%;
     top: 0;
+    border-top-style: solid;
+    -o-border-image: linear-gradient(139deg, #fb8817, #ff4b01, #c12127, #e02aff)
+        3;
+    border-image: linear-gradient(139deg, #fb8817, #ff4b01, #c12127, #e02aff) 3;
 }
 .header-logo {
     width: 2%;
@@ -170,11 +199,18 @@ main {
 .card-book-price {
     margin-right: 8%;
 }
-.text-muted.card-price-discount {
-    color: #000000 !important;
-    font-weight: 600;
+.card-book-price-detail {
+    margin-top: 15px !important;
+    font-size: 1.5rem !important;
 }
-
+.text-muted.card-price-discount {
+    color: red !important;
+    font-weight: 600;
+    font-size: 1.2rem;
+}
+.image-card {
+    height: 130px !important;
+}
 /*FEATURED */
 .featured-btn {
     text-align: center;
@@ -200,16 +236,29 @@ main {
 .shop-page-filter-category {
     padding-bottom: 10px;
     border-bottom: 1px solid #000000;
+    overflow-y: auto;
+    height: 250px;
 }
 
 .btn-shop-page-product {
     display: flex;
     justify-content: right;
+    /* background-color: #f75454 !important; */
 }
 .btn-shop-page-product-sort {
     margin-right: 10px;
+    background-color: #f75454 !important;
 }
-
+.btn-primary {
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+    background-color: #f75454 !important;
+    color: #fff !important;
+}
+.dropdown-toggle.filterByShopPage {
+    background-color: none !important;
+}
 /* PRODUCT PAGE */
 
 .product-page-quantity {
@@ -226,7 +275,19 @@ main {
 .btn-cart-quantity {
     font-size: 1.1rem !important;
 }
-
+.alertAddCart {
+    position: fixed;
+    top: 10%;
+    right: 1%;
+    z-index: 1060;
+}
+.card-body-containt {
+    overflow-y: auto;
+    height: 500px !important;
+}
+.custom-carttotal {
+    height: 20rem !important;
+}
 /* ABOUT */
 
 .about-page {
@@ -238,4 +299,10 @@ main {
     margin-left: 40px !important;
     margin-right: 40px !important;
     border-bottom: 1px solid #333;
+}
+
+/* PAGINATION */
+.pagination-wrapper {
+    display: flex;
+    justify-content: center;
 }

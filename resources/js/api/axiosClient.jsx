@@ -1,7 +1,7 @@
 import axios, { AxiosResponse, AxiosRequestConfig } from "axios";
 axios.defaults.withCredentials = true;
 const axiosClient = axios.create({
-    baseURL: "http://bookworm-app.local:8000/api",
+    baseURL: "http://bookworm-app.local:8000/",
     headers: {
         "Content-Type": "application/json",
     },

@@ -38,6 +38,7 @@ import {
 } from "../../redux/Books/bookSlice";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
+import { history } from "../../utils/history";
 
 export default function OnSale() {
     const onSale = useSelector(selectBookListHomepage_OnSale);

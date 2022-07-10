@@ -70,7 +70,7 @@ class BookController extends Controller
     {
         $bookShow = $this->bookService->getById($id);
 
-        return  response()->json($bookShow['book'], $bookShow['statusCode']);
+        return  $bookShow;
     }
     /**
      * Update the specified resource in storage.

@@ -11,11 +11,16 @@ fillable: khai bao cac truong cho phep insert trong database su dung trong model
 vao cac thuoc tinh trong do
 {
 Request: xu ly du lieu tu UI tra ve validate thuong dung cho insert update
+thuong di kem voi rule
 php artisan make:request StoreBookRequest
 
 Rule: Custom nhung thu co san Vi du kiem tra thang do da 18 tuoi chua
 php artisan make:rule Available
 }
+
+
+getBookAVGRatingStar($idBook): Lay ra sao trung binh cua 1 quyen sach
+getAllAVGRatingStar($idBook):Lay ra danh sach co sao trung binh
 
 Fillter:
     Author: http://bookworm-app.local:8000/api/books?author_id=1,4,5

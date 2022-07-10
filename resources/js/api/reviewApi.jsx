@@ -2,7 +2,7 @@ import axiosClient from "./axiosClient";
 
 const reviewApi = {
     getAll() {
-        const url = "/review";
+        const url = "api/review";
 
         return axiosClient.get(url);
     },

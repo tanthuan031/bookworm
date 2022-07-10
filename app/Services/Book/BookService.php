@@ -160,7 +160,7 @@ class BookService extends BaseServices
         }
         $data = [
             'statusCode' => $statusCode,
-            'book' => $book
+            'data' => $book
         ];
         return $data;
     }
