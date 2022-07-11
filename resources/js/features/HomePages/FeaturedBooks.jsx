@@ -39,10 +39,10 @@ export default function FeaturedBooks({ onChangeFeature }) {
                         {/* <div type="button" className="btn btn-info"> */}
                         <Button
                             // to={"/homepage?recommended"}
-                            className={`btn ${
+                            className={`btn  ${
                                 activeFeature == "1"
                                     ? "custom-button-default"
-                                    : "btn-light"
+                                    : "btn-light cust-btn-feature"
                             }  margin_right-5 `}
                             value={"featured-recommend"}
                             onClick={handleFeatured}
@@ -59,7 +59,7 @@ export default function FeaturedBooks({ onChangeFeature }) {
                             ${
                                 activeFeature == "2"
                                     ? "custom-button-default"
-                                    : "btn-light"
+                                    : "btn-light cust-btn-feature"
                             } 
                             ml-4 `}
                             onClick={handleFeatured}
@@ -99,7 +99,7 @@ export default function FeaturedBooks({ onChangeFeature }) {
                                     {homeBookPage.map((item, index) => (
                                         <Col md={3} className="mb-2">
                                             <Link
-                                                to={`${item.id}`}
+                                                to={`shop/${item.id}`}
                                                 className="card "
                                             >
                                                 <Card.Img

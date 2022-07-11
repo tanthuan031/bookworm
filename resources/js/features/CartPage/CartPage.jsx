@@ -47,7 +47,7 @@ export default function CartPage() {
                 listItemCart: listBookCartItem,
             })
         );
-    }, [dispatch]);
+    }, []);
     const listCartItem = useSelector(selectglobalStateListItemCart);
 
     let totalPriceItem = 0;
@@ -181,6 +181,7 @@ export default function CartPage() {
         } else if (isEmpty(access_token)) {
             Swal.fire("Warning!", "Please ! Login to order", "warning");
             dispatch(authAction.logout());
+            return;
         } else {
             dispatch(
                 orderAction.fetchOrder({
@@ -189,6 +190,15 @@ export default function CartPage() {
                 })
             );
         }
+
+        // Swal.fire("Success", `${message}`, "success");
+        // localStorage.removeItem("total_cart");
+        // localStorage.removeItem("cart");
+        // navigate("/");
+        Swal.fire("Success", `${message}`, "success");
+        localStorage.removeItem("total_cart");
+        localStorage.removeItem("cart");
+        navigate("/");
     };
 
     const isOrdered = useSelector(selectIsOrder);
@@ -196,13 +206,6 @@ export default function CartPage() {
     const messageErr = useSelector(selectOrderMessageError);
     const message = useSelector(selectOrderMessage);
     const navigate = useNavigate();
-
-    if (isOrdered === true) {
-        Swal.fire("Success", `${message}`, "success");
-        localStorage.removeItem("total_cart");
-        localStorage.removeItem("cart");
-        return navigate("/");
-    }
 
     return (
         <>

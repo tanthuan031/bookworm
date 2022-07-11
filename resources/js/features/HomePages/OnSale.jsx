@@ -25,11 +25,11 @@ export default function OnSale() {
     return (
         <Container className="on-sale-mt">
             <Row className="pb-1">
-                <Col md={1}></Col>
-                <Col md={5}>
+                <Col md={1} sm={1}></Col>
+                <Col md={5} sm={5}>
                     <h4>On Sale</h4>
                 </Col>
-                <Col md={5} className="btn-view-all">
+                <Col md={5} sm={5} className="btn-view-all">
                     <Link
                         to="/shop"
                         className="btn custom-button-default shadow-none "
@@ -37,11 +37,11 @@ export default function OnSale() {
                         View All
                     </Link>
                 </Col>
-                <Col md={1}></Col>
+                <Col md={1} sm={1}></Col>
             </Row>
             <Row>
-                <Col md={1}></Col>
-                <Col md={10} className="on-sale pt-2 pb-2 ">
+                <Col md={1} sm={3}></Col>
+                <Col md={10} sm={6} className="on-sale pt-2 pb-2 ">
                     {(() => {
                         if (isLoadingOnSale) {
                             return (
@@ -240,7 +240,7 @@ export default function OnSale() {
                         }
                     })()}
                 </Col>
-                <Col md={1}></Col>
+                <Col md={1} sm={3}></Col>
             </Row>
         </Container>
     );

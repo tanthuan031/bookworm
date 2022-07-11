@@ -10,9 +10,9 @@ import {
     NavDropdown,
 } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { NavLink, useNavigate } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
-import logo from "../../../assets/bookcover/logo.jpg";
+import logo from "../../../assets/bookworm_icon.svg";
 import {
     globalAction,
     selectglobalState,
@@ -81,7 +81,7 @@ export default function Header() {
         if (checkLogin == true) {
             setShow(false);
             Swal.fire("Good job!", "Login success !", "success");
-            return navigate("shop");
+            return navigate("cart");
         }
     }, [checkLogin]);
     // Handle Logout
@@ -93,10 +93,10 @@ export default function Header() {
         <header className="header">
             <nav className={"navbar navbar-expand-lg navbar-dark bg-dark"}>
                 <div className="container-fluid">
+                    {/* <Link to="/"> */}
                     <Image className="header-logo" src={logo} />
-                    <a className="navbar-brand ml-3" href="#">
-                        BOOKWORM
-                    </a>
+
+                    {/* </Link> */}
                     <div
                         className="collapse navbar-collapse justify-content-end "
                         id="navbarSupportedContent"

@@ -13,6 +13,7 @@ import {
     selectBookListHomepage_OnSale,
 } from "../../redux/Books/bookSlice";
 import { useState } from "react";
+import { globalAction } from "../../redux/glocal/globalSlide";
 
 export default function HomePage() {
     // Hadle Featured
@@ -27,6 +28,16 @@ export default function HomePage() {
             })
         );
     }, [dispatch, filterFeature]);
+    const toTalCart = JSON.parse(localStorage.getItem("total_cart"))
+        ? JSON.parse(localStorage.getItem("total_cart"))
+        : 0;
+    useEffect(() => {
+        dispatch(
+            globalAction.fetchglobalStateTotalCart({
+                totalCart: toTalCart,
+            })
+        );
+    }, [dispatch]);
     const handleFeature = (featured) => {
         dispatch(
             bookActions.setFilterHomePage_Feature({

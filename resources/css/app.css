@@ -123,9 +123,11 @@ main {
     border-image: linear-gradient(139deg, #fb8817, #ff4b01, #c12127, #e02aff) 3;
 }
 .header-logo {
-    width: 2%;
+    width: 10%;
     height: auto;
-    margin-right: 10px;
+    /* margin-right: 10px; */
+    padding: 6px;
+    margin-left: 45px;
 }
 /* ONSALE */
 .carousel-control-next,
@@ -261,11 +263,14 @@ main {
     border: none !important;
     outline: none !important;
     box-shadow: none !important;
-    /* background-color: #f75454 !important; */
-    color: rgb(5, 5, 5) !important;
+    background-color: #f75454 !important;
+    color: rgb(255, 253, 253) !important;
 }
 .dropdown-toggle.filterByShopPage {
     background-color: none !important;
+}
+.cust-btn-feature {
+    background-color: #9ba4a6 !important;
 }
 /* PRODUCT PAGE */
 
@@ -313,4 +318,69 @@ main {
 .pagination-wrapper {
     display: flex;
     justify-content: center;
+}
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 500px) {
+    .card-img-top {
+        height: 325px !important;
+    }
+}
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 769px) {
+    .card-img-top {
+        height: 140px !important;
+    }
+    .card-title-custom {
+        font-size: 0.8rem !important;
+        height: 20px !important;
+        margin: 0 !important;
+        display: -webkit-box;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    .card-text-custom {
+        margin: 0;
+        font-size: 0.7rem;
+        height: 20px !important;
+        margin: 0 !important;
+        display: -webkit-box;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    .card-footer {
+        padding: 0.5rem 0rem;
+    }
+    .text-muted.card-price-discount {
+        color: red !important;
+        font-weight: 600;
+        font-size: 0.8rem;
+        padding-left: 10px;
+    }
+    .card-body-item-custom {
+        height: 70px !important;
+        padding: 0.4rem 1rem;
+    }
+    .shop-page-filter-category {
+        padding-bottom: 40px;
+        border-bottom: 1px solid #000000;
+        overflow-y: auto;
+        height: 219px;
+        font-size: 0.7rem;
+    }
+}
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 769px) {
+}
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {
+}
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 1200px) {
 }
