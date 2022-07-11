@@ -83,7 +83,10 @@ class BookRepository
         // $this->query->with('author');
         return $this->query->find($id);
     }
-
+    public function getByIdBook($id)
+    {
+        return $this->query->find($id);
+    }
     public function fillter($cdtAuthor, $cdtCategory, $perPage = 5)
     {
         // TODO: Implement filter() method.
@@ -141,29 +144,16 @@ class BookRepository
                 if (!empty($category_id)) {
                     $this->query->where('category_id', '=', $category_id);
                 }
-                // if (!empty($review_star_id)) {
-                //     // dd('aa');
-                //     $this->query->having(
-                //         Book::raw('avg(review.rating_start)'),
-                //         '>=',
-                //         $review_star_id
-                //     );
-                // }
                 $this->query->with('discount');
                 $this->query->with('author');
-                // dd($this->query->toSql());
                 return $this->query->paginate($perPage);
             } else {
                 $this->query->with('discount');
                 $this->query->with('author');
-                return $this->query->limit(8)->get();
+                return $this->query->limit(10)->get();
             }
-            //            dd($listBooksHome->toSql());
-            //            return $this->query->get();
         } //        getHome with featured-recommend
         elseif (empty($onSale) && !empty($featured) && ($featured == 'featured-recommend' || $featured == 'featured-recommend-sort')) {
-            //            $listBooksHome = ['Featured-recommend'];
-            // dd($author_id, $category_id);
             $this->query
                 ->selectRaw('bs.id,bs.author_id,bs.category_id,author.author_name,bs.book_title,bs.book_price,bs.book_cover_photo,bs.discount_price, sum(bs.sumStar)/sum(bs.countStar) as average_star, bs.final_price')
                 ->from(function ($q) {
@@ -198,13 +188,6 @@ class BookRepository
                 if (!empty($category_id)) {
                     $this->query->where('category_id', '=', $category_id);
                 }
-                // if (!empty($review_star_id)) {
-                //     $this->query->having(
-                //         Book::raw('sum(bs.sumStar)/sum(bs.countStar)'),
-                //         '>=',
-                //         $review_star_id
-                //     );
-                // }
                 $this->query->with('discount');
                 $this->query->with('author');
                 return $this->query->paginate($perPage);
@@ -215,8 +198,7 @@ class BookRepository
             }
         } //        getHome with featured-popular
         elseif (empty($onSale) && !empty($featured) && ($featured == 'featured-popular' || $featured == 'featured-popular-sort')) {
-            //            $listBooksHome = ['Featured-popular'];
-            //            dd($featured);
+
             $this->query
                 ->selectRaw('book.id,book.category_id,book.author_id,author.author_name ,book.book_title , book.book_price , discount.discount_price,
                               case
@@ -239,13 +221,6 @@ class BookRepository
                 if (!empty($category_id)) {
                     $this->query->where('category_id', '=', $category_id);
                 }
-                // if (!empty($review_star_id)) {
-                //     $this->query->having(
-                //         Book::raw('avg(review.rating_start)'),
-                //         '>=',
-                //         $review_star_id
-                //     );
-                // }
                 $this->query->with('discount');
                 $this->query->with('author');
                 return $this->query->paginate($perPage);

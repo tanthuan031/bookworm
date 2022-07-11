@@ -35,25 +35,14 @@ const initialState = {
         total: null,
     },
 };
-
-// const initialStateHomePage={
-//     loadingHomepage:false,
-//     getBookHomePage_Feature:[],
-//     filterHomePage:{
-//         list_books:'featured-recommend',
-//     }
-
-// }
 export const bookSlide = createSlice({
     name: "books",
     initialState,
     reducers: {
         fetchBookList(state, action) {
             state.loading = true;
-            //  console.log('slide', action.payload);
         },
         fetchBookListSuccess(state, action) {
-            console.log("dli", action.payload.data);
             state.list = action.payload.data.data;
             state.pagination = action.payload.data.pagination;
             state.loading = false;
@@ -68,10 +57,8 @@ export const bookSlide = createSlice({
         // BookHomePage_Feature
         fetchBookHomePage_Feature(state, action) {
             state.loadingHomePage_Feature = true;
-            //  console.log('slide', action.payload);
         },
         fetchBookHomePageSuccess_Feature(state, action) {
-            console.log("dli", action.payload.data);
             state.getBookHomePage_Feature = action.payload.data;
             state.loadingHomePage_Feature = false;
         },
@@ -80,13 +67,11 @@ export const bookSlide = createSlice({
         },
         setFilterHomePage_Feature(state, action) {
             state.filterHomePage_Feature = action.payload;
-            // console.log('setFilter',action.payload);
         },
         // /************************************************************************** */
         // BookHomePage_OnSale
         fetchBookHomePage_OnSale(state, action) {
             state.loadingHomePage_OnSale = true;
-            //  console.log('slide', action.payload);
         },
         fetchBookHomePageSuccess_OnSale(state, action) {
             console.log("dli", action.payload.data);
@@ -98,17 +83,14 @@ export const bookSlide = createSlice({
         },
         setFilterHomePage_OnSale(state, action) {
             state.filterHomePage_OnSale = action.payload;
-            // console.log('setFilter',action.payload);
         },
 
         // /************************************************************************** */
         // getBookID
         fetchBookId(state, action) {
             state.loadingBookId = true;
-            //  console.log('slidqqqe', action.payload.idBook.productId);
         },
         fetchBookIdSuccess(state, action) {
-            console.log("dli", action.payload.data);
             state.getBookId = action.payload.data.data;
             state.loadingBookId = false;
         },

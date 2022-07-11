@@ -12,9 +12,12 @@ import authorReducer from "./Author/authorSlide";
 import bookReducer from "./Books/bookSlice";
 import categoryReducer from "./Category/CategorySlide";
 import globalStateReducer from "./glocal/globalSlide";
+import orderReducer from "./Order/orderSlide";
 import rootSaga from "./rootSaga";
 import authReducer from "./User/authSlice";
-
+const customizedMiddleware = getDefaultMiddleware({
+    serializableCheck: false,
+});
 const rootReducer = combineReducers({
     // router: connectRouter(history),
     books: bookReducer,
@@ -22,6 +25,7 @@ const rootReducer = combineReducers({
     author: authorReducer,
     globalstate: globalStateReducer,
     auth: authReducer,
+    order: orderReducer,
 });
 const sagaMiddleware = createSagaMiddleware();
 export const store = configureStore({

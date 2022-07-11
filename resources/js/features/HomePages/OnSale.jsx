@@ -1,44 +1,18 @@
-import React, { useState } from "react";
 // import Swiper core and required modules
-import { Navigation, Pagination, Scrollbar, A11y, Autoplay } from "swiper";
-import book_default from "../../../assets/bookcover/book-default.jpg";
+import { A11y, Autoplay, Navigation, Pagination } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
+import book_default from "../../../assets/bookcover/book-default.jpg";
 
 // Import Swiper styles
+import { Card, Col, Container, Row } from "react-bootstrap";
+import { IoStar, IoStarOutline } from "react-icons/io5";
+import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/scrollbar";
-import {
-    Image,
-    Button,
-    Container,
-    Row,
-    Col,
-    Carousel,
-    Card,
-} from "react-bootstrap";
-import slide from "../../../assets/bookcover/book2.jpg";
-import { Link } from "react-router-dom";
-import {
-    IoCaretBackOutline,
-    IoCaretForwardOutline,
-    IoChevronBackOutline,
-    IoChevronForwardOutline,
-    IoStar,
-    IoStarOutline,
-} from "react-icons/io5";
-import { functions } from "lodash";
-import { colors } from "laravel-mix/src/Log";
-import { useSelector } from "react-redux";
-import {
-    bookActions,
-    selectBookList,
-    selectBookListHomepage_OnSale,
-} from "../../redux/Books/bookSlice";
-import { useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { history } from "../../utils/history";
+import { selectBookListHomepage_OnSale } from "../../redux/Books/bookSlice";
 
 export default function OnSale() {
     const onSale = useSelector(selectBookListHomepage_OnSale);

@@ -1,20 +1,17 @@
-import React from "react";
-import ReactDOM from "react-dom/";
-import Welcome from "./welcome";
-import { HashRouter, Route, Routes, Router } from "react-router-dom";
-import Header from "./features/Layout/Header";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min";
-import HomePage from "./features/HomePages/HomePage";
-import About from "./features/About";
-import Footer from "./features/Layout/Footer";
-import ShopPage from "./features/ShopPages/ShopPage";
-import ProductPage from "./features/ProductPage/ProductPage";
-import CartPage from "./features/CartPage/CartPage";
+import ReactDOM from "react-dom/";
 import { Provider } from "react-redux";
+import { HashRouter, Route, Routes } from "react-router-dom";
+import About from "./features/About";
+import CartPage from "./features/CartPage/CartPage";
+import HomePage from "./features/HomePages/HomePage";
+import Footer from "./features/Layout/Footer";
+import Header from "./features/Layout/Header";
+import ProductPage from "./features/ProductPage/ProductPage";
+import ShopPage from "./features/ShopPages/ShopPage";
 import { store } from "./redux/store";
-import { history } from "./utils/history";
-import { ConnectedRouter } from "connected-react-router";
+import Welcome from "./welcome";
 
 ReactDOM.render(
     <Provider store={store}>

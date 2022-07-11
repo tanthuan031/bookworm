@@ -5,7 +5,9 @@ use App\Http\Controllers\AuthorController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\Category;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ReviewController;
+use App\Models\Order;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -38,8 +40,10 @@ Route::group([
     Route::post('register', [AuthController::class, 'register']);
     Route::post('logout', [AuthController::class, 'logout']);
     Route::get('user', [AuthController::class, 'user'])->middleware('auth:sanctum');
-});
+    // Route::post('order',[OrderController::class, 'order'])->middleware(('auth:sanctum'));
 
+});
+Route::post('order', [OrderController::class, 'store'])->middleware('auth:sanctum');
 Route::resource('/books', BookController::class);
 Route::resource('/categories', CategoryController::class);
 Route::resource('/author', AuthorController::class);

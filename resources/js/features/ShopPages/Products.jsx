@@ -1,23 +1,20 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import {
+    ButtonGroup,
     Card,
     Col,
     Container,
-    Row,
-    DropdownButton,
-    ButtonGroup,
     Dropdown,
+    DropdownButton,
+    Row,
 } from "react-bootstrap";
-import book_default from "../../../assets/bookcover/book-default.jpg";
-import { Link } from "react-router-dom";
 import { IoStar, IoStarOutline } from "react-icons/io5";
-import PaginationComponent from "../Pagination/PaginationComponent";
-import { useEffect } from "react";
-import { useSelector } from "react-redux";
 import Pagination from "react-js-pagination";
+import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+import book_default from "../../../assets/bookcover/book-default.jpg";
 import {
     selectBookList,
-    selectBookListHomepage,
     selectBookPagination,
 } from "../../redux/Books/bookSlice";
 
@@ -29,7 +26,7 @@ export default function Products({
 }) {
     // Show btn sort onSale...
     const bookList = useSelector(selectBookList);
-    console.log("bookList", bookList);
+
     const bookListPagination = useSelector(selectBookPagination);
     // define value of sort field
     const nameSort = {
@@ -40,7 +37,7 @@ export default function Products({
         // desc
         desc: "Sort by price:high to low",
     };
-    // console.log(nameSort[1]);
+
     const [key, setIndex] = useState("Sort by on sale");
     // Show sort order
     const handleSelect = (selectedIndex, e) => {
@@ -53,7 +50,6 @@ export default function Products({
     const handleSelectShow = (selectedIndex, e) => {
         setIndexShow(selectedIndex);
         //  put data cur_page about parent (show 5 , show 15)
-        // console.log("kj", selectedIndex);
         if (!onChangeLimitPage) return;
 
         onChangeLimitPage(selectedIndex);
@@ -79,7 +75,7 @@ export default function Products({
         //  put data about parent
         onPageChange(page);
     };
-    console.log("bookList", bookList);
+
     return (
         <div>
             <Container fluid>
@@ -95,6 +91,7 @@ export default function Products({
                                 id="bg-nested-dropdown"
                                 className="btn-shop-page-product-sort"
                                 onSelect={handleSelect}
+                                key={1}
                             >
                                 <Dropdown.Item
                                     eventKey={"on-sale-sort"}
@@ -131,6 +128,7 @@ export default function Products({
                                 title={"Show " + keyShow}
                                 id="bg-nested-dropdown"
                                 onSelect={handleSelectShow}
+                                key={2}
                             >
                                 <Dropdown.Item
                                     eventKey="5"
@@ -309,15 +307,6 @@ export default function Products({
                 </Row>
 
                 <Row>
-                    {/* <div className=" pagination justify-content-center mt-4">
-                        <PaginationComponent
-                            // getAllData={initialPage.data}
-                            totalRecords={totalBooks}
-                            itemsCountPerPage={perPage}
-                            currentPage={callbackCurrentPage}
-                        />
-                    </div> */}
-
                     <div className="pagination-wrapper ">
                         <Pagination
                             aria-label="Page navigation example"

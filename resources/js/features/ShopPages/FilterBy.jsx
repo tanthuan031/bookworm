@@ -1,7 +1,6 @@
-import { toString } from "lodash";
-import React, { useEffect } from "react";
-import { useState } from "react";
-import { Button, Col, Container, Form, Row } from "react-bootstrap";
+import { useEffect, useState } from "react";
+import { Row } from "react-bootstrap";
+import { IoStar } from "react-icons/io5";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { authorAction, selectAuthorList } from "../../redux/Author/authorSlide";
@@ -9,7 +8,6 @@ import {
     categoryAction,
     selectCategoryList,
 } from "../../redux/Category/CategorySlide";
-import { IoStar, IoStarOutline } from "react-icons/io5";
 export default function FilterBy({
     onFilterByCategory,
     onFilterByAuthor,
@@ -23,7 +21,7 @@ export default function FilterBy({
     }, [dispatch]);
     // getData Category
     const categoryList = useSelector(selectCategoryList);
-    console.log("categoryList", categoryList);
+
     const [activeCate, setActive] = useState(0);
     const onChangeActiveCategory = (e) => {
         setActive(e.target.id);
@@ -37,7 +35,6 @@ export default function FilterBy({
         dispatch(authorAction.fetchAuthorList());
     }, [dispatch]);
     const authorList = useSelector(selectAuthorList);
-    console.log("authorList", authorList);
 
     const [activeAuthor, setActiveAuthor] = useState(0);
     const onChangeActiveAuthor = (e) => {
@@ -113,6 +110,7 @@ export default function FilterBy({
                 </Link>
                 {authorList.map((itemAuthor, index) => (
                     <Link
+                        key={index}
                         className={`list-group-item list-group-item-action  ${
                             activeAuthor == itemAuthor.id ? "active" : ""
                         } `}
@@ -134,6 +132,7 @@ export default function FilterBy({
             </div>
             <Row className="shop-page-filter-category mb-4 ">
                 <Link
+                    key={1}
                     className={` list-group-item list-group-item-action ${
                         activeStar == 0 ? "active" : ""
                     }`}

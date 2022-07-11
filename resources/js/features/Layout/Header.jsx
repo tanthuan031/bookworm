@@ -1,6 +1,5 @@
-import React, { useState } from "react";
-import { Link, Navigate, NavLink, Outlet, useNavigate } from "react-router-dom";
-import logo from "../../../assets/bookcover/logo.jpg";
+import { isEmpty } from "lodash";
+import { useEffect, useState } from "react";
 import {
     Button,
     Form,
@@ -9,32 +8,28 @@ import {
     Nav,
     Navbar,
     NavDropdown,
-    Toast,
 } from "react-bootstrap";
-import { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { NavLink, useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
+import logo from "../../../assets/bookcover/logo.jpg";
 import {
     globalAction,
     selectglobalState,
 } from "../../redux/glocal/globalSlide";
-import { useSelector } from "react-redux";
 import {
     authAction,
     selectGetUser,
-    selectGetUserLogin,
     selectGetUserToken,
     selectIsLoggedIn,
-    selectLogging,
     selectLoginError,
 } from "../../redux/User/authSlice";
-import Swal from "sweetalert2";
-import { info } from "laravel-mix/src/Log";
-import { isEmpty } from "lodash";
 export default function Header() {
     // Show login
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
+
     // Show totalCart
     const toTalCart = JSON.parse(localStorage.getItem("total_cart"))
         ? JSON.parse(localStorage.getItem("total_cart"))
@@ -50,7 +45,6 @@ export default function Header() {
         );
     }, [dispatch]);
     const totalCartBook = useSelector(selectglobalState);
-    console.log(totalCartBook);
 
     // Handle LogIn - Logout **************************************
     // StateLuu data
@@ -65,7 +59,6 @@ export default function Header() {
 
     // State show User already login
     const [user, setUser] = useState();
-    // console.log("fh", stateLogin);
     const handleLoginOnClick = (e) => {
         e.preventDefault();
         const data = {
@@ -87,14 +80,10 @@ export default function Header() {
     useEffect(() => {
         if (checkLogin == true) {
             setShow(false);
-            Swal.fire("Good job!", "You clicked the button!", "success");
+            Swal.fire("Good job!", "Login success !", "success");
             return navigate("shop");
         }
     }, [checkLogin]);
-    console.log("token", token);
-    console.log("lhong,", checkLogin);
-    console.log("user=", userLogin);
-
     // Handle Logout
     const handleLogoutOnClick = (e) => {
         e.preventDefault();
@@ -186,7 +175,7 @@ export default function Header() {
                                     } else {
                                         return (
                                             <Button
-                                                className="nav-link border-0 custom-button-default"
+                                                className="btn-sigin nav-link border-0 custom-button-default"
                                                 onClick={handleShow}
                                                 variant="info"
 
@@ -205,7 +194,7 @@ export default function Header() {
                 </div>
             </nav>
 
-            <Modal show={show} onHide={handleClose} centered>
+            <Modal show={show} onHide={handleClose} centered id="modal_login">
                 <Modal.Header closeButton>
                     <Modal.Title className="text-center">Log In</Modal.Title>
                 </Modal.Header>

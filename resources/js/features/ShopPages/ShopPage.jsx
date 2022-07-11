@@ -44,12 +44,8 @@ export default function ShopPage() {
             })
         );
     }, [dispatch, filter]);
-    // console.log("fil", filter);
-    // useEffect(() => {
-    //     booksApi.getAll().then((response)=>console.log(response.data));
-    // })
+
     const handlePageChange = (page) => {
-        // console.log("page11", page);
         dispatch(
             bookActions.setFilter({
                 ...filter,
@@ -59,7 +55,6 @@ export default function ShopPage() {
     };
     // Show page (5,15,25)
     const handleLimitPage = (per_page) => {
-        console.log("jh", per_page);
         dispatch(
             bookActions.setFilter({
                 ...filter,
@@ -68,19 +63,19 @@ export default function ShopPage() {
         );
     };
     const handChangeSort = (sort) => {
-        console.log("handChangeSort", sort);
         dispatch(
             bookActions.setFilter({
                 ...filter,
                 list_books: sort,
                 star: null,
+                author_id: null,
+                category_id: null,
             })
         );
     };
 
     // Handle Filter Category
     const hadleFilterCategory = (id) => {
-        // console.log(id);
         dispatch(
             bookActions.setFilter({
                 ...filter,
@@ -92,7 +87,6 @@ export default function ShopPage() {
 
     // Handle Filter Author
     const hadleFilterAuthor = (id) => {
-        // console.log(id);
         dispatch(
             bookActions.setFilter({
                 ...filter,
@@ -105,7 +99,6 @@ export default function ShopPage() {
     // Handle Filter Star
 
     const hadleFilterStar = (id) => {
-        console.log(id);
         dispatch(
             bookActions.setFilter({
                 ...filter,

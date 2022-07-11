@@ -36,17 +36,12 @@ class BookService extends BaseServices
                 $data = $this->getBookHomeSale_Feature($request, $perPage);
             } elseif ($request->has('sort')) {
                 $sort = $request['sort'];
+
                 $data = $this->bookRepository->getAll($sort, $perPage);
             } else {
                 $data = $this->bookRepository->getAll('desc', $perPage);
             }
         } else {
-
-
-            // if ($request->has('author_id') || $request->has('category_id')) {
-            //     $data = $this->fillter($request, $perPage);
-            // } else
-
             if ($request->has('star')) {
                 $data = $this->fillter($request, $perPage);
             } else if ($request->has('list_books') || $request->has('author_id') || $request->has('category_id')) {
@@ -78,8 +73,6 @@ class BookService extends BaseServices
             ];
         }
         return $listBook;
-
-        // return $data;
     }
 
     public function fillter($conditions, $perPage)
@@ -120,7 +113,7 @@ class BookService extends BaseServices
         $cdtCategory = $conditions['category_id'] ? $conditions['category_id'] : '';
         $cdtAuthor = $conditions['author_id'] ? $conditions['author_id'] : '';
         $cdtStar = $conditions['star'] ? $conditions['star'] : '';
-        //        http://bookworm-app.local:8000/api/books?list_books=onsale
+        //        http://bookworm-app.local:8000/api/books?list_books=on-sale
         if ($conditions->has('list_books')) {
             if ($conditions['list_books'] == 'on-sale' || $conditions['list_books'] == 'on-sale-sort') {
 

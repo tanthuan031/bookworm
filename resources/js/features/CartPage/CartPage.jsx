@@ -1,31 +1,34 @@
-import React, { useState } from "react";
+import { isEmpty } from "lodash";
+import { useState } from "react";
+import { useEffect } from "react";
 import {
+    Button,
     Card,
     Col,
     Container,
-    Pagination,
-    Row,
-    DropdownButton,
-    ButtonGroup,
-    Dropdown,
+    Form,
     Image,
     InputGroup,
-    Button,
-    Form,
-    Alert,
+    Row,
 } from "react-bootstrap";
-import slide from "../../../assets/bookcover/book1.jpg";
-import book_default from "../../../assets/bookcover/book-default.jpg";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { IoStar, IoStarOutline } from "react-icons/io5";
-import { useEffect } from "react";
-import { useSelector } from "react-redux";
+import Swal from "sweetalert2";
+import book_default from "../../../assets/bookcover/book-default.jpg";
 import {
     globalAction,
+    selectglobalState,
     selectglobalStateListItemCart,
 } from "../../redux/glocal/globalSlide";
-import { useDispatch } from "react-redux";
-
+import {
+    orderAction,
+    selectIsOrder,
+    selectOrderCartError,
+    selectOrderMessage,
+    selectOrderMessageError,
+} from "../../redux/Order/orderSlide";
+import { authAction } from "../../redux/User/authSlice";
+import { NavLink, useNavigate } from "react-router-dom";
 export default function CartPage() {
     var total_cart = 0;
 
@@ -46,7 +49,7 @@ export default function CartPage() {
         );
     }, [dispatch]);
     const listCartItem = useSelector(selectglobalStateListItemCart);
-    console.log(listCartItem);
+
     let totalPriceItem = 0;
 
     const handleDecrement = (e) => {
@@ -63,7 +66,7 @@ export default function CartPage() {
         const idCartItem = e.target.dataset.iditem;
         const finalPrice = listCartItem[e.target.dataset.id].final_price;
         var currentVal = elementInputCart.value;
-        console.log(elementbtnIncrement);
+
         if (currentVal > 1) {
             elementInputCart.value = --currentVal;
             elementbtnIncrement.disabled = false;
@@ -78,16 +81,13 @@ export default function CartPage() {
             let result = confirm("Are you want to delete this book ?");
             if (result == true) {
                 delete listCart[idCartItem];
+                total_cart -= 1;
             }
         }
-        console.log("final", finalPrice);
-        console.log("dec", currentVal);
-        console.log("final+dev", finalPrice * currentVal);
 
         elementToTolItemCart.innerHTML = `${(currentVal * finalPrice).toFixed(
             2
         )}$`;
-        // console.log(e.target.dataset.iditem);
 
         localStorage.setItem("cart", JSON.stringify(listCart));
         localStorage.setItem("total_cart", JSON.stringify(total_cart));
@@ -109,8 +109,6 @@ export default function CartPage() {
     // Lang nghe su thay doi cua cai item do va va cap nhat so luong vao the input
     // -
 
-    // console.log("not in fc", totalPirceItemCart);
-    // console.log("rg", totalPirceItemCart);
     // +
     const handleInCrement = (e) => {
         // Get element from cart onclick
@@ -127,7 +125,6 @@ export default function CartPage() {
         var currentVal = elementInputCart.value;
 
         if (currentVal <= 7) {
-            console.log("cur", currentVal);
             elementInputCart.value = ++currentVal;
             if (listCart) {
                 if (idCartItem in listCart) {
@@ -138,15 +135,13 @@ export default function CartPage() {
         } else {
             elementInputCart.value = 8;
             currentVal = 8;
-            // console.log("cur", currentVal);
-            // alert("ban muon xoa sp nay");
+
             e.target.disabled = true;
         }
-        console.log("cur", currentVal);
+
         elementToTolItemCart.innerHTML = `${(currentVal * finalPrice).toFixed(
             2
         )}$`;
-        // console.log(e.target.dataset.iditem);
 
         localStorage.setItem("cart", JSON.stringify(listCart));
         localStorage.setItem("total_cart", JSON.stringify(total_cart));
@@ -162,12 +157,58 @@ export default function CartPage() {
             })
         );
     };
-    // console.log("gg", totalPirceItemCart);
+    // Handle Place Order
+    const [isOrderedSucc, setIsOrder] = useState(true);
+    const handlePlaceOder = (e) => {
+        const listCartItemLocal = JSON.parse(localStorage.getItem("cart"))
+            ? JSON.parse(localStorage.getItem("cart"))
+            : {};
+        const totalCartItemLocal = JSON.parse(
+            localStorage.getItem("total_cart")
+        )
+            ? JSON.parse(localStorage.getItem("total_cart"))
+            : "";
+
+        const access_token = localStorage.getItem("access_token")
+            ? localStorage.getItem("access_token")
+            : "";
+
+        const arraylistCartItemLocal = Object.values(listCartItemLocal);
+
+        if (isEmpty(arraylistCartItemLocal)) {
+            Swal.fire("Warning!", "You are not item in cart ?", "warning");
+            return;
+        } else if (isEmpty(access_token)) {
+            Swal.fire("Warning!", "Please ! Login to order", "warning");
+            dispatch(authAction.logout());
+        } else {
+            dispatch(
+                orderAction.fetchOrder({
+                    order_amount: totalCartItemLocal,
+                    order_item: arraylistCartItemLocal,
+                })
+            );
+        }
+    };
+
+    const isOrdered = useSelector(selectIsOrder);
+    const checkCartItemExits = useSelector(selectOrderCartError);
+    const messageErr = useSelector(selectOrderMessageError);
+    const message = useSelector(selectOrderMessage);
+    const navigate = useNavigate();
+
+    if (isOrdered === true) {
+        Swal.fire("Success", `${message}`, "success");
+        localStorage.removeItem("total_cart");
+        localStorage.removeItem("cart");
+        return navigate("/");
+    }
+
     return (
         <>
             <Container className="margin-Top">
                 <Row className="about-title">
-                    <h3> Your cart: {listCartItem.length} item</h3>
+                    <h3> Your cart:{useSelector(selectglobalState)} item</h3>
                 </Row>
 
                 <Row className="mt-5">
@@ -189,37 +230,43 @@ export default function CartPage() {
                             <Card.Body className="card-body-containt">
                                 {listCartItem.map((itemCart, idex) => {
                                     return (
-                                        <Row className="text-center mt-3 border-bottom shadow p-2">
+                                        <Row className="text-center mt-3 border-bottom shadow p-2 cart_item ">
                                             <Col md={5}>
-                                                <Row>
-                                                    <Col md={6}>
-                                                        <Image
-                                                            src={`${
-                                                                itemCart.book_cover_photo !=
-                                                                null
-                                                                    ? "/images/" +
-                                                                      itemCart.book_cover_photo
-                                                                    : book_default
-                                                            }.jpg`}
-                                                            className="img-fluid rounded-start image-card"
-                                                        />
-                                                    </Col>
-                                                    <Col
-                                                        md={6}
-                                                        className="d-flex justify-content-center flex-column"
-                                                    >
-                                                        <h4 className="card-title-custom">
-                                                            {
-                                                                itemCart.book_title
-                                                            }
-                                                        </h4>
-                                                        <p className="card-text-custom">
-                                                            {
-                                                                itemCart.author_name
-                                                            }
-                                                        </p>
-                                                    </Col>
-                                                </Row>
+                                                <Link
+                                                    to={`/shop/${itemCart.id}`}
+                                                    className="cart_item"
+                                                    target="_blank"
+                                                >
+                                                    <Row>
+                                                        <Col md={6}>
+                                                            <Image
+                                                                src={`${
+                                                                    itemCart.book_cover_photo !=
+                                                                    null
+                                                                        ? "/images/" +
+                                                                          itemCart.book_cover_photo
+                                                                        : book_default
+                                                                }.jpg`}
+                                                                className="img-fluid rounded-start image-card"
+                                                            />
+                                                        </Col>
+                                                        <Col
+                                                            md={6}
+                                                            className="d-flex justify-content-center flex-column"
+                                                        >
+                                                            <h4 className="card-title-custom">
+                                                                {
+                                                                    itemCart.book_title
+                                                                }
+                                                            </h4>
+                                                            <p className="card-text-custom">
+                                                                {
+                                                                    itemCart.author_name
+                                                                }
+                                                            </p>
+                                                        </Col>
+                                                    </Row>
+                                                </Link>
                                             </Col>
                                             <Col
                                                 md={2}
@@ -337,6 +384,7 @@ export default function CartPage() {
                                     <Button
                                         variant="info"
                                         className="product-btn-add-cart  btn-primary"
+                                        onClick={handlePlaceOder}
                                     >
                                         Place order
                                     </Button>

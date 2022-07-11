@@ -1,30 +1,20 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import {
+    Alert,
+    Button,
     Card,
     Col,
-    Container,
-    Pagination,
-    Row,
-    DropdownButton,
-    ButtonGroup,
-    Dropdown,
+    Form,
     Image,
     InputGroup,
-    Button,
-    Form,
-    Alert,
+    Row,
 } from "react-bootstrap";
-import slide from "../../../assets/bookcover/book1.jpg";
-import { Link } from "react-router-dom";
-import { IoStar, IoStarOutline } from "react-icons/io5";
-import { selectBookId } from "../../redux/Books/bookSlice";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import book_default from "../../../assets/bookcover/book-default.jpg";
-import { useDispatch } from "react-redux";
+import { selectBookId } from "../../redux/Books/bookSlice";
 import { globalAction } from "../../redux/glocal/globalSlide";
 export default function ProductDetail(props) {
     const dispatch = useDispatch();
-    // console.log(' product detail',props.bookList);
     const getBookId = useSelector(selectBookId);
     // quantity product cart
     const [stateQuantityCart, setQuantity] = useState(1);
@@ -36,9 +26,9 @@ export default function ProductDetail(props) {
     const handleDecrement = (e) => {
         setQuantity(stateQuantityCart - 1 >= 1 ? stateQuantityCart - 1 : 1);
     };
-
     // Handle to Cart
     const [show, setShow] = useState(false);
+    const [show1, setShow1] = useState(false);
     const handleAddToCart = (e) => {
         const quantity = stateQuantityCart;
         let total_cart = 0;
@@ -52,8 +42,18 @@ export default function ProductDetail(props) {
 
         let idBook = e.target.dataset.id;
         if (idBook in cart) {
-            cart[idBook].quantity += quantity;
-            total_cart += quantity;
+            const quantitycheck = cart[idBook].quantity;
+
+            if (quantitycheck > 8 || quantitycheck + quantity > 8) {
+                setShow1(true);
+                setTimeout(() => {
+                    setShow1(false);
+                }, 3000);
+                return;
+            } else {
+                cart[idBook].quantity += quantity;
+                total_cart += quantity;
+            }
         } else {
             let cartItem = {
                 id: getBookId.id,
@@ -78,10 +78,6 @@ export default function ProductDetail(props) {
                 totalCart: total_cart,
             })
         );
-        // dispatch(
-        //     globalAction.fetchglobalStateListItemCart({ listItemCart: cart })
-        // );
-
         setShow(true);
         setTimeout(() => {
             setShow(false);
@@ -92,7 +88,12 @@ export default function ProductDetail(props) {
         <>
             <Row className="mt-5">
                 <Col md={7}>
-                    <div className="card mb-3 p-2">
+                    <div className="card mb-3 p-2" id={getBookId.id}>
+                        <input
+                            value={getBookId.id}
+                            hidden={true}
+                            className="cart_item_id"
+                        />
                         <Row className="no-gutters">
                             <Col md={4}>
                                 {/* <Image src="..." alt="..."> */}
@@ -185,6 +186,7 @@ export default function ProductDetail(props) {
                                         value={stateQuantityCart}
                                         className="input-group-text border-0 custom-btn "
                                         disabled="disabled"
+
                                         // className="custom-btn"
                                     />
                                     <Button
@@ -211,6 +213,9 @@ export default function ProductDetail(props) {
             <div className="alertAddCart">
                 <Alert show={show} variant="success">
                     Add to cart successfully !
+                </Alert>
+                <Alert show={show1} variant="warning">
+                    The number of books has been maxed !
                 </Alert>
                 {/* {!show && <Button onClick={handleAddToCart}>Show Alert</Button>} */}
             </div>

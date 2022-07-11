@@ -22,25 +22,10 @@ function* handleLogout() {
         localStorage.removeItem("access_token");
         localStorage.removeItem("fullname");
         const reponse = yield call(authApi.logout);
-        console.log(reponse);
-        // console.log("logout", reponse);
     }
 }
-// function* watchLoginFlow() {
-//     // while (true) {
-//     // const isLoggedIn = Boolean(localStorage.getItem("access_token"));
-//     if (!localStorage.getItem("access_token")) {
-//         const action = yield take(authAction.login);
-//         yield fork(handleLogin, action.payload.data);
-//     }
-//     // console.log("rh");
-//     if ((action = yield take(authAction.logout))) {
-//         yield call(handleLogout, action.payload);
-//     }
-// }
 export default function* authSaga() {
     // yield fork(watchLoginFlow);
     yield takeLatest(authAction.login, handleLogin);
-    yield takeLatest(authAction.getUser, getUser);
     yield takeLatest(authAction.logout, handleLogout);
 }

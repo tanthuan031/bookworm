@@ -6,8 +6,6 @@ const initialState = {
     errorsMessage: {},
     token: "",
     isgetUser: false,
-    getUser: {},
-    getUserErr: "",
 };
 const authSlice = createSlice({
     name: "auth",

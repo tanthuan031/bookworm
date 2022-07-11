@@ -44,12 +44,12 @@ class ReviewService
 
             if ($conditions->has('per_page')) {
                 $perPage = $conditions['per_page'];
-                $data = $this->review->getAllAVGRatingStar($starFilter, $perPage);
+                $data = $this->review->getBookAVGRatingStar($starFilter, $perPage);
             } else {
-                $data = $this->review->getAllAVGRatingStar($starFilter, $perPage);
+                $data = $this->review->getBookAVGRatingStar($starFilter, $perPage);
             }
         } else {
-            $data = $this->review->getAllAVGRatingStar($starFilter, $perPage);
+            $data = $this->review->getBookAVGRatingStar($starFilter, $perPage);
         }
         if ($data) {
             $listBook = [

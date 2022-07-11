@@ -190,6 +190,10 @@ main {
     height: 120px !important;
     padding: 0.4rem 1rem;
 }
+.cart_item {
+    text-decoration: none !important;
+    color: #000000 !important;
+}
 .star-body {
     text-align: center;
 }

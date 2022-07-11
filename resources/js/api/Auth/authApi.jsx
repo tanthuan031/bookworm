@@ -14,12 +14,7 @@ const authApi = {
             });
         return response;
     },
-    async getUser() {
-        await Csrf.getCookie();
-        const user = await axiosClient.get("api/auth/user");
-        console.log("ja", user);
-        return user;
-    },
+
     async logout() {
         await Csrf.getCookie();
         return axiosClient.post("api/auth/logout");

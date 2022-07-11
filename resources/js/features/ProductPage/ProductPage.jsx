@@ -1,34 +1,13 @@
-import React, { useState } from "react";
-import {
-    Card,
-    Col,
-    Container,
-    Pagination,
-    Row,
-    DropdownButton,
-    ButtonGroup,
-    Dropdown,
-    Image,
-    InputGroup,
-    Button,
-    Form,
-    Alert,
-} from "react-bootstrap";
-import slide from "../../../assets/bookcover/book1.jpg";
-import { Link, useParams } from "react-router-dom";
-import { IoStar, IoStarOutline } from "react-icons/io5";
-import ProductDetail from "./ProductDetail";
-import { useSelector } from "react-redux";
-import { selectBookId, selectBookList } from "../../redux/Books/bookSlice";
-import { useDispatch } from "react-redux";
 import { useEffect } from "react";
-import { bookActions } from "../../redux/Books/bookSlice";
+import { Container, Row } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
+import { bookActions, selectBookId } from "../../redux/Books/bookSlice";
+import ProductDetail from "./ProductDetail";
 export default function ProductPage() {
     //  const bookList = useSelector(selectBookList);
 
-    //  console.log("aa", bookList);
     const bookId = useParams();
-    // console.log("aa", bookId);
     const dispatch = useDispatch();
     useEffect(() => {
         dispatch(
@@ -38,8 +17,6 @@ export default function ProductPage() {
         );
     }, [dispatch]);
     const getBookId = useSelector(selectBookId);
-    // console.log(",,", getBookId);
-
     return (
         <Container className="margin-Top">
             <Row className="about-title">
