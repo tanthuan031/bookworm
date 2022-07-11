@@ -200,8 +200,8 @@ export default function Header() {
                 </Modal.Header>
                 <Modal.Body>
                     <Form onSubmit={handleLoginOnClick}>
-                        <span className="text-danger text-center">
-                            {messageError.email}
+                        <span className="text-danger text-center dl  d-flex justify-content-center">
+                            {messageError.message_noterror}
                         </span>
                         <Form.Group className="mb-3" controlId="formBasicEmail">
                             <Form.Label>Email address</Form.Label>

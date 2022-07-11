@@ -12,9 +12,11 @@ import { IoStar, IoStarOutline } from "react-icons/io5";
 import Pagination from "react-js-pagination";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { CircleLoader } from "react-spinners";
 import book_default from "../../../assets/bookcover/book-default.jpg";
 import {
     selectBookList,
+    selectBookLoading,
     selectBookPagination,
 } from "../../redux/Books/bookSlice";
 
@@ -26,6 +28,7 @@ export default function Products({
 }) {
     // Show btn sort onSale...
     const bookList = useSelector(selectBookList);
+    const isLoadingShopage = useSelector(selectBookLoading);
 
     const bookListPagination = useSelector(selectBookPagination);
     // define value of sort field
@@ -162,149 +165,187 @@ export default function Products({
                         </div>
                     </Col>
                 </Row>
-
-                <Row>
-                    {bookList.map((book, index) => (
-                        <Col md={3} className="mb-2">
-                            <div className="card-group">
-                                <Link to={`${book.id}`} className="card">
-                                    <Card.Img
-                                        variant="top"
-                                        // src={slide}
-                                        src={`${
-                                            book.book_cover_photo != null
-                                                ? "/images/" +
-                                                  book.book_cover_photo
-                                                : book_default
-                                        }.jpg`}
-                                    />
-                                    <Card.Body className="card-body-item-custom">
-                                        <Card.Title className="card-title-custom">
-                                            {book.book_title}
-                                        </Card.Title>
-                                        <Card.Text className="card-text-custom">
-                                            {book.author.author_name}
-                                        </Card.Text>
-                                        <div className="star-body">
-                                            {(() => {
-                                                if (
-                                                    book.average_star < 2 &&
-                                                    book.average_star >= 1
-                                                ) {
-                                                    return (
-                                                        <>
-                                                            <IoStar className="star-checked" />
-                                                            <IoStarOutline />
-                                                            <IoStarOutline />
-                                                            <IoStarOutline />
-                                                            <IoStarOutline />
-                                                        </>
-                                                    );
-                                                } else if (
-                                                    book.average_star >= 2 &&
-                                                    book.average_star < 3
-                                                ) {
-                                                    return (
-                                                        <>
-                                                            <IoStar className="star-checked" />
-                                                            <IoStar className="star-checked" />
-                                                            <IoStarOutline />
-                                                            <IoStarOutline />
-                                                            <IoStarOutline />
-                                                        </>
-                                                    );
-                                                } else if (
-                                                    book.average_star >= 3 &&
-                                                    book.average_star < 4
-                                                ) {
-                                                    return (
-                                                        <>
-                                                            <IoStar className="star-checked" />
-                                                            <IoStar className="star-checked" />
-                                                            <IoStar className="star-checked" />
-                                                            <IoStarOutline />
-                                                            <IoStarOutline />
-                                                        </>
-                                                    );
-                                                } else if (
-                                                    book.average_star >= 4 &&
-                                                    book.average_star < 5
-                                                ) {
-                                                    return (
-                                                        <>
-                                                            <IoStar className="star-checked" />
-                                                            <IoStar className="star-checked" />
-                                                            <IoStar className="star-checked" />
-                                                            <IoStar className="star-checked" />
-                                                            <IoStarOutline />
-                                                        </>
-                                                    );
-                                                } else if (
-                                                    book.average_star >= 5 &&
-                                                    book.average_star < 6
-                                                ) {
-                                                    return (
-                                                        <>
-                                                            <IoStar className="star-checked" />
-                                                            <IoStar className="star-checked" />
-                                                            <IoStar className="star-checked" />
-                                                            <IoStar className="star-checked" />
-                                                            <IoStar className="star-checked" />
-                                                            <IoStar className="star-checked" />
-                                                        </>
-                                                    );
-                                                } else {
-                                                    return (
-                                                        <>
-                                                            <IoStarOutline />
-                                                            <IoStarOutline />
-                                                            <IoStarOutline />
-                                                            <IoStarOutline />
-                                                            <IoStarOutline />
-                                                        </>
-                                                    );
-                                                }
-                                            })()}
-                                        </div>
-                                    </Card.Body>
-                                    <Card.Footer>
-                                        {(() => {
-                                            if (book.discount != null) {
-                                                return (
-                                                    <div>
-                                                        <small className="text-muted card-book-price">
-                                                            <del>
-                                                                {
-                                                                    book.book_price
-                                                                }
-                                                                $
-                                                            </del>
-                                                        </small>
-                                                        <small className="text-muted card-price-discount">
-                                                            {
-                                                                book.discount
-                                                                    .discount_price
+                {(() => {
+                    if (isLoadingShopage) {
+                        return (
+                            <CircleLoader
+                                // color={color}
+                                loading={true}
+                                className={"overridess"}
+                                size={50}
+                            />
+                        );
+                    } else {
+                        return (
+                            <Row>
+                                {bookList.map((book, index) => (
+                                    <Col md={3} className="mb-2">
+                                        <div className="card-group">
+                                            <Link
+                                                to={`${book.id}`}
+                                                className="card"
+                                            >
+                                                <Card.Img
+                                                    variant="top"
+                                                    // src={slide}
+                                                    src={`${
+                                                        book.book_cover_photo !=
+                                                        null
+                                                            ? "/images/" +
+                                                              book.book_cover_photo
+                                                            : book_default
+                                                    }.jpg`}
+                                                />
+                                                <Card.Body className="card-body-item-custom">
+                                                    <Card.Title className="card-title-custom">
+                                                        {book.book_title}
+                                                    </Card.Title>
+                                                    <Card.Text className="card-text-custom">
+                                                        {
+                                                            book.author
+                                                                .author_name
+                                                        }
+                                                    </Card.Text>
+                                                    <div className="star-body">
+                                                        {(() => {
+                                                            if (
+                                                                book.average_star <
+                                                                    2 &&
+                                                                book.average_star >=
+                                                                    1
+                                                            ) {
+                                                                return (
+                                                                    <>
+                                                                        <IoStar className="star-checked" />
+                                                                        <IoStarOutline />
+                                                                        <IoStarOutline />
+                                                                        <IoStarOutline />
+                                                                        <IoStarOutline />
+                                                                    </>
+                                                                );
+                                                            } else if (
+                                                                book.average_star >=
+                                                                    2 &&
+                                                                book.average_star <
+                                                                    3
+                                                            ) {
+                                                                return (
+                                                                    <>
+                                                                        <IoStar className="star-checked" />
+                                                                        <IoStar className="star-checked" />
+                                                                        <IoStarOutline />
+                                                                        <IoStarOutline />
+                                                                        <IoStarOutline />
+                                                                    </>
+                                                                );
+                                                            } else if (
+                                                                book.average_star >=
+                                                                    3 &&
+                                                                book.average_star <
+                                                                    4
+                                                            ) {
+                                                                return (
+                                                                    <>
+                                                                        <IoStar className="star-checked" />
+                                                                        <IoStar className="star-checked" />
+                                                                        <IoStar className="star-checked" />
+                                                                        <IoStarOutline />
+                                                                        <IoStarOutline />
+                                                                    </>
+                                                                );
+                                                            } else if (
+                                                                book.average_star >=
+                                                                    4 &&
+                                                                book.average_star <
+                                                                    5
+                                                            ) {
+                                                                return (
+                                                                    <>
+                                                                        <IoStar className="star-checked" />
+                                                                        <IoStar className="star-checked" />
+                                                                        <IoStar className="star-checked" />
+                                                                        <IoStar className="star-checked" />
+                                                                        <IoStarOutline />
+                                                                    </>
+                                                                );
+                                                            } else if (
+                                                                book.average_star >=
+                                                                    5 &&
+                                                                book.average_star <
+                                                                    6
+                                                            ) {
+                                                                return (
+                                                                    <>
+                                                                        <IoStar className="star-checked" />
+                                                                        <IoStar className="star-checked" />
+                                                                        <IoStar className="star-checked" />
+                                                                        <IoStar className="star-checked" />
+                                                                        <IoStar className="star-checked" />
+                                                                        <IoStar className="star-checked" />
+                                                                    </>
+                                                                );
+                                                            } else {
+                                                                return (
+                                                                    <>
+                                                                        <IoStarOutline />
+                                                                        <IoStarOutline />
+                                                                        <IoStarOutline />
+                                                                        <IoStarOutline />
+                                                                        <IoStarOutline />
+                                                                    </>
+                                                                );
                                                             }
-                                                            $
-                                                        </small>{" "}
+                                                        })()}
                                                     </div>
-                                                );
-                                            } else {
-                                                return (
-                                                    <div>
-                                                        <small className="text-muted card-book-price card-price-discount">
-                                                            {book.book_price}$
-                                                        </small>
-                                                    </div>
-                                                );
-                                            }
-                                        })()}
-                                    </Card.Footer>
-                                </Link>
-                            </div>
-                        </Col>
-                    ))}
-                </Row>
+                                                </Card.Body>
+                                                <Card.Footer>
+                                                    {(() => {
+                                                        if (
+                                                            book.discount !=
+                                                            null
+                                                        ) {
+                                                            return (
+                                                                <div>
+                                                                    <small className="text-muted card-book-price">
+                                                                        <del>
+                                                                            {
+                                                                                book.book_price
+                                                                            }
+                                                                            $
+                                                                        </del>
+                                                                    </small>
+                                                                    <small className="text-muted card-price-discount">
+                                                                        {
+                                                                            book
+                                                                                .discount
+                                                                                .discount_price
+                                                                        }
+                                                                        $
+                                                                    </small>{" "}
+                                                                </div>
+                                                            );
+                                                        } else {
+                                                            return (
+                                                                <div>
+                                                                    <small className="text-muted card-book-price card-price-discount">
+                                                                        {
+                                                                            book.book_price
+                                                                        }
+                                                                        $
+                                                                    </small>
+                                                                </div>
+                                                            );
+                                                        }
+                                                    })()}
+                                                </Card.Footer>
+                                            </Link>
+                                        </div>
+                                    </Col>
+                                ))}
+                            </Row>
+                        );
+                    }
+                })()}
 
                 <Row>
                     <div className="pagination-wrapper ">

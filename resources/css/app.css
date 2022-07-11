@@ -12,7 +12,11 @@ main {
     background: rgb(247, 250, 252);
     /*width: 50%;*/
 }
-
+.overridess {
+    display: block;
+    margin: 0 auto;
+    color: #07d63b;
+}
 .welcome-text {
     color: #f75454;
     font-weight: 600;
@@ -257,8 +261,8 @@ main {
     border: none !important;
     outline: none !important;
     box-shadow: none !important;
-    background-color: #f75454 !important;
-    color: #fff !important;
+    /* background-color: #f75454 !important; */
+    color: rgb(5, 5, 5) !important;
 }
 .dropdown-toggle.filterByShopPage {
     background-color: none !important;
