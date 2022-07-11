@@ -91,7 +91,7 @@ export default function Header() {
     };
     return (
         <header className="header">
-            <nav className={"navbar navbar-expand-lg navbar-dark bg-dark"}>
+            <nav className={"navbar navbar-expand-lg navbar-dark bg-dark "}>
                 <div className="container-fluid">
                     {/* <Link to="/"> */}
                     <Image className="header-logo" src={logo} />
